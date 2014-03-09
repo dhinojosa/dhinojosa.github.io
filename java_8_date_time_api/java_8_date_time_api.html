@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="Asciidoctor 0.1.4" name="generator">
+<meta content="Daniel Hinojosa" name="author">
+<title>Set Your Clocks the Java Date Time API is Here</title>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+<link href="deck.js/core/deck.core.css" rel="stylesheet">
+<link href="deck.js/extensions/hash/deck.hash.css" media="screen" rel="stylesheet">
+<link href="deck.js/extensions/scale/deck.scale.css" media="screen" rel="stylesheet">
+<link href="deck.js/extensions/navigation/deck.navigation.css" media="screen" rel="stylesheet">
+<link href="deck.js/themes/style/web-2.0.css" media="screen" rel="stylesheet">
+<link href="deck.js/themes/transition/horizontal-slide.css" media="screen" rel="stylesheet">
+<link href="deck.js/core/print.css" media="print" rel="stylesheet">
+<script src="deck.js/modernizr.custom.js"></script>
+</head>
+<body class="deck-container article">
+<section class="slide" id="title-slide">
+<h1>Set Your Clocks the Java Date Time API is Here</h1>
+<span id="author">Daniel Hinojosa</span>
+<br>
+</section>
+<section class="slide" id="_who_is_this_for">
+<h2>Who is this for?</h2>
+<div class="ulist">
+<ul>
+<li>Java/Groovy/Scala/Clojure Developers interested in Java 8 APIs</li>
+<li>Those who enjoyed or currently enjoy Joda Time</li>
+<li>Those who have burned by <code>java.util.Date</code> and <code>java.util.Calendar</code></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_introduction_to_some_terms">
+<h2>Introduction to some terms</h2>
+<div class="ulist">
+<ul>
+<li>Epochs</li>
+<li>Time Keepers</li>
+<li>ISO 8601</li>
+<li>Java Calendars and Dates</li>
+<li>Joda Time</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_epoch">
+<h2>Epoch</h2>
+<div class="ulist">
+<ul>
+<li>Serves as a reference point from which time is measured</li>
+<li>The beginning of time of a particular context</li>
+<li>Current and historical calendar eras exist, each with its own epoch</li>
+<li>Based mostly on religious or political milestones</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_political_asian_epochs_calendars">
+<h2>Political Asian Epochs &amp; Calendars</h2>
+
+</section>
+
+<section class="slide" id="_japan">
+<h2>Japan</h2>
+<div class="ulist">
+<ul>
+<li>Japanese based eras</li>
+<li>Each epoch begins with the current ascension of the current emperor</li>
+<li>Current era, Heisei era begins January 8, 1989 after the death of Hirohito</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_china">
+<h2>China</h2>
+<div class="ulist">
+<ul>
+<li>Followed similar rules to Japan until 1912</li>
+<li>After 1912 : Gregorian Calendar adopted in the Republican Era</li>
+<li>Common Era : People&#8217;s Republic of China established, continues to use Gregorian Calendar</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_india">
+<h2>India:</h2>
+<div class="ulist">
+<ul>
+<li>The Saka Era. Vernal Equinox since year 78.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_north_korea">
+<h2>North Korea</h2>
+<div class="ulist">
+<ul>
+<li>Starts 1912: but because Kim Il-Sung was born on that date.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_thailand">
+<h2>Thailand</h2>
+<div class="ulist">
+<ul>
+<li>Founding of Bangkok in 1782, but in 1941 uses 543BC started Thai Solar Calendar.</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_religious_epochs_calendars">
+<h2>Religious Epochs &amp; Calendars</h2>
+
+</section>
+
+<section class="slide" id="_judaism">
+<h2>Judaism</h2>
+<div class="ulist">
+<ul>
+<li>Anno Mundi - Hebrew Calendar date from "Creation" March 18, 3952 BC/BCE</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_islam">
+<h2>Islam</h2>
+<div class="ulist">
+<ul>
+<li>Anno Hegiræ - The year of the Hijra (the Migration of Mohammed to Medina in 622)</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_hindu">
+<h2>Hindu</h2>
+<div class="ulist">
+<ul>
+<li><p>
+Bikram Samvat (Bikram Sambat)<div class="ulist">
+<ul>
+<li>Calendar established by Indian emperor Vikramaditya.</li>
+<li>It is a popularly used calendar in India and the official calendar of Bangladesh and Nepal</li>
+</ul>
+</div></p></li>
+<li><p>
+Hindu Calendar<div class="ulist">
+<ul>
+<li><p>
+Various Calendars<div class="ulist">
+<ul>
+<li>Nepali Calendar</li>
+<li>Assamese Calendar</li>
+<li>Bengali Calendar</li>
+<li>Malayalam Calendar</li>
+<li>Tamil Calendar</li>
+<li>Telugu Calendar</li>
+<li>Kannada Calendar</li>
+</ul>
+</div></p></li>
+<li>All they have in common are the same months</li>
+<li>The month that starts each year is different</li>
+<li>Basis for the Buddhist Calendar</li>
+</ul>
+</div></p></li>
+<li><p>
+Yuga<div class="ulist">
+<ul>
+<li>Four age cycle epochs</li>
+<li>Life in the universe is created and destroyed every 4.1 to 8.2 billion years</li>
+<li>One full day and night for Brahma</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_european_calendar">
+<h2>European Calendar</h2>
+<div class="ulist">
+<ul>
+<li><p>
+Roman Calendar<div class="ulist">
+<ul>
+<li>Changed Various Times</li>
+<li>Year Started on March 1</li>
+<li>Consisted of 304 days</li>
+</ul>
+</div></p></li>
+<li><p>
+Julian Calendar<div class="ulist">
+<ul>
+<li>Julius Caesar</li>
+<li>Established 46 BC</li>
+<li>365.25 days</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_christianity">
+<h2>Christianity</h2>
+<div class="ulist">
+<ul>
+<li>Anno Domini (AD)</li>
+<li>Used Globally</li>
+<li>Associated with the incarnation of Jesus</li>
+<li>Origins of what is known as civil time</li>
+<li><p>
+Gregorian Calendar<div class="ulist">
+<ul>
+<li>Pope Gregory XIII</li>
+<li>Refines the &#8220;leap year&#8221; to 365.2425 (0.002%)</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_computer_epochs">
+<h2>Computer Epochs</h2>
+<div class="ulist">
+<ul>
+<li>Matlab, Turbo DB, tdbengine – January 1, 0</li>
+<li>Symbian, Go, .NET, RXX, Rata Die – January 1, 1</li>
+<li>NTFS, COBOL, Win32/64 – January 1, 1601</li>
+<li>MS SQL Server – January 1, 1753</li>
+<li>Microsoft Products, Lotus 1-2-3 - January 0, 1900.</li>
+<li>Common LISP, CICS, Network Time Protocol – January 1, 1900</li>
+<li>LabView, Mac OS &#8656; 9.0, Palm – January 1, 1904</li>
+</ul>
+</div>
+
+<div class="paragraph"><p>source: <a href="http://en.wikipedia.org/wiki/Epoch_(reference_date)">http://en.wikipedia.org/wiki/Epoch_(reference_date)</a></p></div>
+</section>
+
+<section class="slide" id="_the_nix_java_standard">
+<h2>The *nix/Java Standard</h2>
+<div class="ulist">
+<ul>
+<li>January 1, 1970 Midnight GMT. </li>
+<li>Unix Time – The Day Unix was born</li>
+<li>Unix, Linux, Ruby, Mac OS X, Java, JavaScript, C, PHP</li>
+<li>Windows doesn&#8217;t adhere to Unix Time</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_how_we_measure_time">
+<h2>How we measure time</h2>
+
+</section>
+
+<section class="slide" id="_sundials">
+<h2>Sundials</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Sundials" src="./images/sundials.png">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_water_clocks_clepsydras">
+<h2>Water Clocks/Clepsydras</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Clepsydra1" src="./images/clepsydras1.png">
+</div>
+</div>
+
+<div class="imageblock">
+<div class="content">
+<img alt="Clepsydra2" src="./images/clepsydras2.png">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_pendulum">
+<h2>Pendulum</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Pendulum" src="./images/pendulum.png">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_quartz">
+<h2>Quartz</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Quartz" src="./images/quartz.png">
+</div>
+</div>
+
+<div class="paragraph"><p>32,768 Hz</p></div>
+</section>
+
+<section class="slide" id="_atomic_clock">
+<h2>Atomic Clock</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Atomic Clock" src="./images/atomic_clock.png">
+</div>
+</div>
+
+<div class="paragraph"><p>Cesium 133: 9,192,631,770 cycles of radiation</p></div>
+</section>
+
+<section class="slide" id="_iso_8601_standard">
+<h2>ISO 8601 Standard</h2>
+<div class="ulist">
+<ul>
+<li>Standard and Collaborative means of managing date and time</li>
+<li>Based on the cesium-133 atom atomic clock</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_iso_8601_formats">
+<h2>ISO 8601 Formats</h2>
+<table class="tableblock frame-all grid-all" style="width:100%">
+<colgroup>
+<col style="width:50%">
+<col style="width:50%">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Format</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Example</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-01-01</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combined Date and Time in UTC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-07-07T07:01Z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Combined Date and Time in MDT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-07-07T07:38:51.716-06:00</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Date With Week Number</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-W27-3</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ordinal Date</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-188</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P3Y6M4DT12H30M5S</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finite Interval</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-03-01T13:00:00Z/2015-05-11T15:30:00Z</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Finite Start with Duration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">2014-03-01T13:00:00Z/P1Y2M10DT2H30M</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Duration with with Finite End</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">P1Y2M10DT2H30M/2015-05-11T15:30:00Z</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section class="slide" id="_kxcd_iso_8601">
+<h2>Kxcd ISO-8601</h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/iso_8601.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_gmt_v_utc">
+<h2>GMT v. UTC</h2>
+
+</section>
+
+<section class="slide" id="_gmt">
+<h2>GMT</h2>
+<div class="ulist">
+<ul>
+<li>Greenwich Mean Time</li>
+<li>Mean solar time at the Royal Observatory in Greenwich, London.</li>
+<li>Britain had been the world&#8217;s time keeper since Victorian Age.</li>
+<li>It is commonly used in practice to refer to UTC (not accurate)</li>
+<li>Side Note: GMT used in winter, British Summer Time in summer</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_utc">
+<h2>UTC</h2>
+<div class="ulist">
+<ul>
+<li>Coordinated Universal Time</li>
+<li>Backronym: "Universal Time, Coordinated"</li>
+<li>Time Standard based on International Atomic Time (TAI)</li>
+<li>Universally accepted</li>
+<li>UTC replaced GMT as the basis for the main reference time scale or civil time in various regions on 1 January 1972.</li>
+<li>GMT doesn&#8217;t address sub-second levels of time.</li>
+<li>Backed with Atomic Time</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_life_and_times_java">
+<h2>Life and Times Java</h2>
+
+</section>
+
+<section class="slide" id="__code_java_util_date_code">
+<h2><code>java.util.Date</code></h2>
+<div class="ulist">
+<ul>
+<li>Introduced millisecond resolution</li>
+<li>java.util.Date</li>
+<li><p>
+What was wrong with it?<div class="ulist">
+<ul>
+<li>Constructors that accept year arguments require offsets from 1900, which has been a source of bugs.</li>
+<li>January is represented by 0 instead of 1, also a source of bugs.</li>
+<li>Date doesn&#8217;t describe a date but describes a date-time combination.</li>
+<li>Date&#8217;s mutability makes it unsafe to use in multithreaded scenarios without external synchronization.</li>
+<li>Date isn&#8217;t amenable to internationalization.</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="paragraph"><p>Source: <a href="http://www.javaworld.com/article/2078757/java-se/java-101-the-next-generation-it-s-time-for-a-change.html">http://www.javaworld.com/article/2078757/java-se/java-101-the-next-generation-it-s-time-for-a-change.html</a></p></div>
+</section>
+
+<section class="slide" id="__code_java_util_calendar_code">
+<h2><code>java.util.Calendar</code></h2>
+<div class="ulist">
+<ul>
+<li>Introduced in Java 1.1</li>
+<li><p>
+What is wrong with it?<div class="ulist">
+<ul>
+<li>It isn&#8217;t possible to format a calendar.</li>
+<li>January is represented by 0 instead of 1, a source of bugs.</li>
+<li>Calendar isn&#8217;t type-safe; for example, you must pass an int-based constant to the get(int field) method. (In fairness, enums weren&#8217;t available when Calendar was released.)</li>
+<li>Calendar&#8217;s mutability makes it unsafe to use in multithreaded scenarios without external synchronization. (The companion java.util.TimeZone and java.text.DateFormat classes share this problem.)</li>
+<li>Calendar stores its state internally in two different ways&#8201;&#8212;&#8201;as a millisecond offset from the epoch and as a set of fields&#8201;&#8212;&#8201;resulting in many bugs and performance issues.</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="paragraph"><p>Source: <a href="http://www.javaworld.com/article/2078757/java-se/java-101-the-next-generation-it-s-time-for-a-change.html">http://www.javaworld.com/article/2078757/java-se/java-101-the-next-generation-it-s-time-for-a-change.html</a></p></div>
+</section>
+
+<section class="slide" id="_of_course_then_there_is_this">
+<h2>Of course then there is this:</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>&gt; new java.util.GregorianCalendar
+
+java.util.GregorianCalendar = java.util.GregorianCalendar[time=1393764079082,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="America/New_York",offset=-18000000,dstSavings=3600000,useDaylight=true,transitions=235,lastRule=java.util.SimpleTimeZone[id=America/New_York,offset=-18000000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2014,MONTH=2,WEEK_OF_YEAR=10,WEEK_OF_MONTH=2,DAY_OF_MONTH=2,DAY_OF_YEAR=61,DAY_OF_WEEK=1,DAY_OF_WEEK_IN_MONTH=1,AM_PM=0,HOUR=7,HOUR_OF_DAY=7,MINUTE=41,SECOND=19,MILLISECOND=82,ZONE_OFFSET=-18000000,DST_...</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_what_was_cool_about_joda_time">
+<h2>What was cool about Joda Time</h2>
+<div class="ulist">
+<ul>
+<li>Straight-forward instantiation and methods</li>
+<li>UTC/ISO 8601 Based, not Gregorian Calendar</li>
+<li>Has support for other calendar systems if you need it (Julian, Gregorian-Julian, Coptic, Buddhist)</li>
+<li>Includes classes for date times, dates without times, times without dates, intervals and time periods.</li>
+<li>Advanced formatting</li>
+<li>Well documented and well tested</li>
+<li>Immutable!</li>
+<li>Months are 1 based</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_about_the_java_8_date_time_api">
+<h2>About the Java 8 Date Time API</h2>
+<div class="ulist">
+<ul>
+<li>Authored by the same team as Joda Time</li>
+<li>Immutable &amp; Threadsafe</li>
+<li>Learned from previous mistakes made in Joda Time</li>
+<li>There are no <em>constructors</em> (Dude what?)</li>
+<li>Nanosecond Resolution</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_the_java_date_time_packaging">
+<h2>The Java Date Time Packaging</h2>
+<div class="ulist">
+<ul>
+<li><code>java.time</code> - Base package for managing date time</li>
+<li><code>java.time.chrono</code> - Package that handles alternative calendering and chronology systems</li>
+<li><code>java.time.format</code> - Package that handles formatting of dates and times</li>
+<li><code>java.time.temporal</code> - Package that allows us to query dates and times</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_date_time_conventions">
+<h2>Date Time Conventions</h2>
+<div class="ulist">
+<ul>
+<li><code>of</code> - static factory usually validating input parameters not converting them</li>
+<li><code>from</code> - static factory that converts to an instance of a target class</li>
+<li><code>parse</code> - static factory that parses an input string</li>
+<li><code>format</code> - uses a specified formatter to format the date</li>
+<li><code>get</code> - Returns part of the state of the target object</li>
+<li><code>is</code> - Queries the state of the object</li>
+<li><code>with</code> - Returns a copy of the object with one element changed, this is the immutable equivalent</li>
+<li><code>plus</code> - Returns a copy of the target object with the amount of time added</li>
+<li><code>minus</code> - Returns a copy of the target object with the amount of time subtracted</li>
+<li><code>to</code> - Converts this object to another object type</li>
+<li><code>at</code> - Combines the object with another
+==</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_instant">
+<h2>Instant</h2>
+<div class="ulist">
+<ul>
+<li>Single point in time</li>
+<li>Time since the Unix/Java Epoch <code>1970-01-01T00:00:00Z</code></li>
+<li>Differs from the <code>java.util.Date</code> and <code>long</code> representation</li>
+<li><p>
+Contains two states:<div class="ulist">
+<ul>
+<li><code>long</code> of seconds since the Unix Epoch</li>
+<li><code>int</code> of nano seconds within one second</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_that_a_lot_of_resolution">
+<h2>That a lot of resolution!</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="mork nanoo" src="./images/mork_nanoo.jpg">
+</div>
+</div>
+
+<div class="paragraph"><p>An <code>Instant</code> can be resolved as 1.844674407×10<sup>19</sup> seconds
+or 584542046090 years!</p></div>
+</section>
+
+<section class="slide" id="_some_of_the_basic_features_of_code_instant_code">
+<h2>Some of the basic features of <code>Instant</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Instant now = Instant.now();
+System.out.println(now.getEpochSecond());
+System.out.println(now.getNano());
+System.out.println(Instant.parse("2014-02-20T20:21:20.432Z"));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_an_code_instant_code">
+<h2>UML Diagram of an <code>Instant</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/instant_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_enums">
+<h2>Enums</h2>
+
+</section>
+
+<section class="slide" id="__code_month_code_and_code_dayofweek_code">
+<h2><code>Month</code> and <code>DayOfWeek</code></h2>
+<div class="ulist">
+<ul>
+<li><p>
+The Java Date/Time API contains <code>enum</code> classes to describe our months and days<div class="ulist">
+<ul>
+<li><code>Month</code></li>
+<li><code>DayOfWeek</code></li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="__code_month_code_and_code_dayofweek_code_exemplified">
+<h2><code>Month</code> and <code>DayOfWeek</code> Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>DayOfWeek.SUNDAY
+DayOfWeek.FRIDAY</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Month.JANUARY
+Month.JULY
+Month.DECEMBER</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_chronounit_code">
+<h2><code>ChronoUnit</code></h2>
+<div class="ulist">
+<ul>
+<li><code>enum</code> to represent a unit of time for a scalar</li>
+<li><code>implements TemporalUnit</code></li>
+<li><code>ChronoUnit</code> is meant to be general enough for various calendars</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_chronounit_code">
+<h2>UML Diagram of <code>ChronoUnit</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/chrono_unit_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_chronounit_code_exemplified">
+<h2><code>ChronoUnit</code> Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ChronoUnit.DAYS
+ChronoUnit.CENTURIES
+ChronoUnit.ERAS
+ChronoUnit.MINUTES
+ChronoUnit.MONTHS
+ChronoUnit.SECONDS
+ChronoUnit.FOREVER</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Instant.now().plus(19, ChronoUnit.DAYS)</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_chronofield_code">
+<h2><code>ChronoField</code></h2>
+<div class="ulist">
+<ul>
+<li>Represents a field in a date</li>
+<li><p>
+Given: <code>2010-10-22T12:00:13</code> has six fields<div class="ulist">
+<ul>
+<li>The year: <code>2010</code></li>
+<li>The month: <code>10</code></li>
+<li>The day of the month: <code>22</code></li>
+<li>The hour of the day: <code>12</code></li>
+<li>The minute: <code>0</code></li>
+<li>The seconds: <code>13</code></li>
+</ul>
+</div></p></li>
+<li><code>implements TemporalField</code></li>
+<li><code>ChronoField</code> is also meant to be general enough for various calendars</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="__code_chronofield_code_exemplified">
+<h2><code>ChronoField</code> Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ChronoField.MONTH_OF_YEAR
+ChronoField.DAY_OF_MONTH
+ChronoField.HOUR_OF_DAY
+ChronoField.SECOND_OF_MINUTE
+ChronoField.SECOND_OF_DAY
+ChronoField.MINUTE_OF_DAY
+ChronoField.MINUTE_OF_HOUR</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Instant.now.get(ChronoField.HOUR_OF_DAY);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_chronofield_code">
+<h2>UML Diagram of <code>ChronoField</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/chrono_field_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_local_dates_and_times">
+<h2>Local Dates and Times</h2>
+<div class="ulist">
+<ul>
+<li><code>LocalDate</code> - An ISO 8601 date representation without timezone and time</li>
+<li><code>LocalTime</code>- An ISO 8601 time representation without timezone and date</li>
+<li><code>LocalDateTime</code> - An ISO 8601 date and time representation without time zone</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_localdate_code_code_localtime_code_code_localdatetime_code">
+<h2>UML Diagram of <code>LocalDate</code>, <code>LocalTime</code>, <code>LocalDateTime</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/local_date_time_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_localdate_code_exemplified">
+<h2><code>LocalDate</code> exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDate february20th = LocalDate.of(2014, Month.FEBRUARY, 20);
+february20th;                                            //2014-02-20
+LocalDate.from(february20th.plus(15, ChronoUnit.YEARS)); //2029-02-20
+LocalDate.parse("2014-11-22");                           //2014-11-22</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_localtime_code_exemplified">
+<h2><code>LocalTime</code> exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalTime.MIDNIGHT;                              //00:00
+LocalTime.NOON;                                  //12:00
+LocalTime.of(23, 12, 30, 500);                   //23:12:30.000000500
+LocalTime.now();                                 //00:40:34.110
+LocalTime.ofSecondOfDay(11 * 60 * 60);           //11:00
+LocalTime.from(LocalTime.MIDNIGHT.plusHours(4)); //04:00</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_localdatetime_code_exemplified">
+<h2><code>LocalDateTime</code> exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDateTime.of(2014, 2, 15, 12, 30, 50, 200); //2014-02-15T12:30:50.000000200
+LocalDateTime.now();                            //2014-02-28T17:28:21.002
+LocalDateTime.from(
+   LocalDateTime.of
+      (2014, 2, 15, 12, 30, 40, 500)
+        .plusHours(19)));                       //2014-02-16T07:30:40.000000500
+LocalDateTime.MIN;                              //-999999999-01-01T00:00
+LocalDateTime.MAX;                              //+999999999-12-31T23:59:59.999999999</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_zoneddatetime_code">
+<h2><code>ZonedDateTime</code></h2>
+<div class="ulist">
+<ul>
+<li>Specifies a complete date and time in a particular time zone</li>
+<li>Contains methods that can convert from <code>LocalDate</code>, <code>LocalTime</code>, and <code>LocalDateTime</code> to <code>ZonedDateTime</code></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_but_first_code_zoneid_code">
+<h2>But first, <code>ZoneId</code></h2>
+<div class="ulist">
+<ul>
+<li><code>ZoneId</code> represents the IANA Time Zone Entry</li>
+<li><a href="http://www.iana.org/time-zones">http://www.iana.org/time-zones</a></li>
+<li>Download tar.gz file, locate the region file (e.g. northamerica)</li>
+<li>TimeZone names are divided by region</li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code># Monaco
+# Shanks &amp; Pottenger give 0:09:20 for Paris Mean Time; go with Howse's
+# more precise 0:09:21.
+# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
+Zone	Europe/Monaco	0:29:32 -	LMT	1891 Mar 15
+			0:09:21	-	PMT	1911 Mar 11    # Paris Mean Time
+			0:00	France	WE%sT	1945 Sep 16 3:00
+			1:00	France	CE%sT	1977
+			1:00	EU	CE%sT</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_creating_the_code_zoneid_code">
+<h2>Creating the <code>ZoneId</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ZoneId.of("America/Denver");
+ZoneId.of("Asia/Jakarta");
+ZoneId.of("America/Los_Angeles");
+ZoneId.ofOffset("UTC", ZoneOffset.ofHours(-6));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_creating_your_code_zoneid_code_naming">
+<h2>Creating your <code>ZoneId</code> naming</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+map.put("Pacific", "America/Los_Angeles");
+map.put("Mountain", "America/Denver");
+map.put("Central", "America/Chicago");
+map.put("Eastern", "America/New_York");
+ZoneId.of("Mountain", map);  // Same as "America/Denver"</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_zoneddatetime_code">
+<h2>UML Diagram of <code>ZonedDateTime</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/zoned_date_time_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_zoneddatetime_code_exemplified">
+<h2><code>ZonedDateTime</code> exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ZonedDateTime.now();  //Current Date Time with Zone
+
+ZonedDateTime myZonedDateTime = ZonedDateTime.of(2014, 1, 31, 11, 20, 30, 93020122, ZoneId.systemDefault());
+
+ZonedDateTime nowInAthens = ZonedDateTime.now(ZoneId.of("Europe/Athens"));
+
+LocalDate localDate = LocalDate.of(2013, 11, 12);
+LocalTime localTime = LocalTime.of(23, 10, 44, 12882);
+ZoneId chicago = ZoneId.of("America/Chicago");
+ZonedDateTime chicagoTime = ZonedDateTime.of(localDate, localTime, chicago);
+
+
+LocalDateTime localDateTime = LocalDateTime.of(1982, Month.APRIL, 17, 14, 11);
+ZonedDateTime jakartaTime = ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Jakarta"));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_shifting_time">
+<h2>Shifting Time</h2>
+
+</section>
+
+<section class="slide" id="_durations_and_periods">
+<h2>Durations and Periods</h2>
+<div class="ulist">
+<ul>
+<li><p>
+To model a span of time (e.g. 10 days) you have two choices<div class="ulist">
+<ul>
+<li><code>Duration</code> - a span of time in seconds and nanoseconds</li>
+<li><code>Period</code> -a span of time in years, months and days</li>
+</ul>
+</div></p></li>
+<li>Both implement <code>TemporalAmount</code></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_more_about_code_duration_code">
+<h2>More about <code>Duration</code></h2>
+<div class="ulist">
+<ul>
+<li>Spans only seconds and nanoseconds</li>
+<li>Meant to adjust <code>LocalTime</code> (assumes no dates are involved)</li>
+<li><p>
+<code>static</code> method calls include construction for:<div class="ulist">
+<ul>
+<li>days</li>
+<li>hours</li>
+<li>milliseconds</li>
+<li>nanoseconds</li>
+</ul>
+</div></p></li>
+<li>Can have a side effect depending on which API calls you make</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_duration_code">
+<h2>UML Diagram of <code>Duration</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/duration_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_duration_code_exemplified">
+<h2><code>Duration</code> Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Duration duration =  Duration.ofDays(33); //seconds or nanos
+Duration duration1 = Duration.ofHours(33); //seconds or nanos
+Duration duration2 = Duration.ofMillis(33); //seconds or nanos
+Duration duration3 = Duration.ofMinutes(33); //seconds or nanos
+Duration duration4 = Duration.ofNanos(33); //seconds or nanos
+Duration duration5 = Duration.ofSeconds(33); //seconds or nanos
+Duration duration6 = Duration.between(LocalDate.of(2012, 11, 11), LocalDate.of(2013, 1, 1));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_more_about_code_period_code">
+<h2>More about <code>Period</code></h2>
+<div class="ulist">
+<ul>
+<li>Spans years, months, weeks and days</li>
+<li>Meant to adjust <code>LocalDate</code> (assumes no times are involved)</li>
+<li><p>
+<code>static</code> method calls include construction for:<div class="ulist">
+<ul>
+<li>days</li>
+<li>months</li>
+<li>weeks</li>
+<li>years</li>
+</ul>
+</div></p></li>
+<li>Can also have a side effect depending on which API call you make</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_uml_diagram_of_code_period_code">
+<h2>UML Diagram of <code>Period</code></h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/period_uml.png" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="__code_period_code_exemplified">
+<h2><code>Period</code> Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Period p = Period.ofDays(30);
+Period p1 = Period.ofMonths(12);
+Period p2 = Period.ofWeeks(11);
+Period p3 = Period.ofYears(50);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_shifting_dates_and_time">
+<h2>Shifting Dates and Time</h2>
+<div class="ulist">
+<ul>
+<li><p>
+Any class that derives from <code>Temporal</code> has the ability to add or remove any time using methods:<div class="ulist">
+<ul>
+<li><code>plus</code></li>
+<li><code>minus</code></li>
+</ul>
+</div></p></li>
+<li>&#8220;Changing&#8221; any one implementation of a <code>Temporal</code> will provide a copy!</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_shifting_code_localdate_code">
+<h2>Shifting <code>LocalDate</code></h2>
+<div class="ulist">
+<ul>
+<li><p>
+A shift of <code>LocalDate</code> can be done with:<div class="ulist">
+<ul>
+<li>a <code>TemporalAmount</code> (<code>Period</code>)</li>
+<li>a <code>long</code> with <code>TemporalUnit</code> (<code>ChronoUnit</code>)</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDate localDate = LocalDate.of(2012, 11, 23);
+localDate.plus(3, ChronoUnit.DAYS); //2012-11-26
+localDate.plus(Period.ofDays(3)); //2012-11-26
+try {
+   localDate.plus(Duration.ofDays(3));  //2012-11-26
+} catch (UnsupportedTemporalTypeException e) {
+   e.printStackTrace();
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_shifting_code_localtime_code">
+<h2>Shifting <code>LocalTime</code></h2>
+<div class="ulist">
+<ul>
+<li><p>
+A shift of <code>LocalTime</code> can be done with:<div class="ulist">
+<ul>
+<li>a <code>TemporalAmount</code> (<code>Duration</code>)</li>
+<li>a <code>long</code> with <code>TemporalUnit</code> (<code>ChronoUnit</code>)</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalTime localTime = LocalTime.of(11, 20, 50);
+localTime.plus(3, ChronoUnit.HOURS); //14:20:50
+localTime.plus(Duration.ofDays(3)); //11:20:50
+try {
+  localTime.plus(Period.ofDays(3));
+} catch (UnsupportedTemporalTypeException e) {
+  e.printStackTrace();
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_temporal_adjusters">
+<h2>Temporal Adjusters</h2>
+<div class="ulist">
+<ul>
+<li>New construct</li>
+<li><code>interface</code> that can be implemented to specialize a time shift</li>
+<li>Use Case - An object that shifts time based on external factors</li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>@FunctionalInterface
+public interface TemporalAdjuster {
+   Temporal adjustInto(Temporal temporal);
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_overly_simplified_temporal_adjuster">
+<h2>Overly Simplified Temporal Adjuster</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>TemporalAdjuster fourMinutesFromNow = new TemporalAdjuster() {
+   @Override
+   public Temporal adjustInto(Temporal temporal) {
+       return temporal.plus(4, ChronoUnit.MINUTES);
+   }
+};
+
+LocalTime localTime = LocalTime.of(12, 0, 0);
+localTime.with(fourMinutesFromNow)); //12:04</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_but_wait_there_s_more">
+<h2>But, wait there&#8217;s more!</h2>
+<div class="paragraph"><p>Remember this?</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>@FunctionalInterface
+public interface TemporalAdjuster {
+      Temporal adjustInto(Temporal temporal);
+}</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>That&#8217;s a Java 8 Lambda! Therefore <code>fourMinutesFromNow</code> can now be:</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>TemporalAdjuster fourMinutesFromNow = temporal -&gt; temporal.plus(4, ChronoUnit.MINUTES);
+LocalTime localTime = LocalTime.of(12, 0, 0);
+localTime.with(fourMinutesFromNow)); //12:04</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_refactoring_and_inlining">
+<h2>Refactoring and inlining</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalTime.of(12, 0, 0).with(temporal -&gt; temporal.plus(4, ChronoUnit.MINUTES));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_simple_isn_t_it">
+<h2>Simple, isn&#8217;t it?</h2>
+<div class="imageblock" style="text-align: center; float: center">
+<div class="content">
+<img alt="80%" src="./images/keanu.jpg" width="80%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_parsing_and_formatting">
+<h2>Parsing and Formatting</h2>
+<div class="ulist">
+<ul>
+<li>Converting dates and times from a <code>String</code> is always important</li>
+<li><code>java.time.format.DateFormatter</code></li>
+<li>Immutable and Threadsafe</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_formatting_code_localdate_code">
+<h2>Formatting <code>LocalDate</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+
+dateFormatter.format(LocalDate.now()); // Jan. 19, 2014</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_formatting_code_localtime_code">
+<h2>Formatting <code>LocalTime</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>DateTimeFormatter timeFormatter =
+   DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM);
+
+timeFormatter.format(LocalTime.now())); //3:01:48 PM</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_formatting_code_localdatetime_code">
+<h2>Formatting <code>LocalDateTime</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>DateTimeFormatter dateTimeFormatter =
+   DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.SHORT);
+
+dateTimeFormatter.format(LocalDateTime.now())); // Jan. 19, 2014 3:01 PM</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_formatting_customized_patterns">
+<h2>Formatting Customized Patterns</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>DateTimeFormatter obscurePattern =
+   DateTimeFormatter.ofPattern("MMMM dd, yyyy '(In Time Zone: 'VV')'");
+ZonedDateTime zonedNow = ZonedDateTime.now();
+
+obscurePattern.format(zonedNow); //January 19, 2014 (In Time Zone: America/Denver)</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_formatting_with_localization">
+<h2>Formatting with Localization</h2>
+<div class="ulist">
+<ul>
+<li><p>
+Localization using <code>java.util.Locale</code> is available for:<div class="ulist">
+<ul>
+<li><code>ofLocalizedDate</code></li>
+<li><code>ofLocalizedTime</code></li>
+<li><code>ofLocalizedDateTime</code></li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Europe/Paris"));
+
+DateTimeFormatter longDateTimeFormatter =
+DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL, FormatStyle.FULL).withLocale(Locale.FRENCH);
+longDateTimeFormatter.getLocale(); //fr
+longDateTimeFormatter.format(zonedDateTime); //samedi 19 janvier 2014 00 h 00 CET</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_shifting_time_zones">
+<h2>Shifting Time Zones</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDateTime localDateTime = LocalDateTime.of(1982, Month.APRIL, 17, 14, 11);
+ZonedDateTime jakartaTime = ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Jakarta"));
+jakartaTime.withZoneSameInstant(ZoneId.of("America/Los_Angeles"))); //1982-04-16T23:11-08:00[America/Los_Angeles]
+jakartaTime.withZoneSameLocal(ZoneId.of("America/New_York"))); //1982-04-17T14:11-05:00[America/New_York]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_temporal_querying">
+<h2>Temporal Querying</h2>
+<div class="ulist">
+<ul>
+<li><p>
+Process of asking information about a <code>TemporalAccessor</code><div class="ulist">
+<ul>
+<li><code>LocalDate</code></li>
+<li><code>LocalTime</code></li>
+<li><code>LocalDateTime</code></li>
+<li><code>ZonedDateTime</code></li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>@FunctionalInterface
+public interface TemporalQuery&lt;R&gt; {
+    R queryFrom(TemporalAccessor temporal);
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_a_festive_example">
+<h2>A Festive Example</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>TemporalQuery&lt;Integer&gt; daysBeforeChristmas = new TemporalQuery&lt;Integer&gt;() {
+    public int daysTilChristmas (int acc, Temporal temporal) {
+        int month = temporal.get(ChronoField.MONTH_OF_YEAR);
+        int day = temporal.get(ChronoField.DAY_OF_MONTH);
+        int max = Month.of(month).maxLength();
+        if (month == 12 &amp;&amp; day &lt;= 25) return acc + (25 - day);
+        return daysTilChristmas(acc + (max - day + 1),
+           temporal.with(TemporalAdjusters.firstDayOfNextMonth()));
+    }
+
+
+    @Override
+    public Integer queryFrom(TemporalAccessor temporal) {
+        if (!(temporal instanceof Temporal))
+            throw new RuntimeException("Temporal accessor must be of type Temporal");
+        return daysTilChristmas(0, (Temporal) temporal);
+    }
+};
+
+LocalDate.of(2013, 12, 26).query(daysBeforeChristmas); //364
+LocalDate.of(2013, 12, 23).query(daysBeforeChristmas); //2
+LocalDate.of(2013, 12, 25).query(daysBeforeChristmas); //0
+ZonedDateTime.of(2013, 12, 1, 11, 0, 13, 938282,
+  ZoneId.of("America/Los_Angeles"))
+  .query(daysBeforeChristmas)); //24</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_let_s_come_back_to_parsing">
+<h2>Let&#8217;s come back to parsing</h2>
+<div class="ulist">
+<ul>
+<li>We discussed <code>format</code> but not <code>parse</code></li>
+<li>There is more to it</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_simple_parsing">
+<h2>Simple Parsing</h2>
+<div class="paragraph"><p>LOLWUT?</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>DateTimeFormatter dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+dateFormatter.parse("Jan 19, 2014")); // {}, ISO resolved to 2014-01-19</code></pre>
+</div>
+</div>
+
+<div class="ulist">
+<ul>
+<li>Parses to <code>java.time.format.Parsed</code> which is rather useless</li>
+<li>The more effective call is to <code>parse(CharSequence, TemporalQuery)</code></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_first_attempt">
+<h2>First Attempt</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>TemporalQuery&lt;LocalDate&gt; localDateTemporalQuery = new TemporalQuery&lt;LocalDate&gt;() {
+   @Override
+   public LocalDate queryFrom(TemporalAccessor temporal) {
+       return LocalDate.from(temporal);
+   }
+};
+
+dateFormatter.parse("Jan 19, 2014", localDateTemporalQuery); //2014-01-19</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_second_attempt">
+<h2>Second Attempt</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>dateFormatter.parse("Jan 19, 2014", temporal -&gt; LocalDate.from(temporal)); //2014-01-19</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_about_java_8_instance_method_references">
+<h2>About Java 8 Instance Method References</h2>
+<div class="paragraph"><p>Given</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>@FunctionalInterface
+public interface Predicate&lt;T&gt; {
+   public boolean test(T t);
+}</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>And</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>static class IntPredicates {
+public static boolean isOdd(Integer n) { return n % 2 != 0; }
+public static boolean isEven(Integer n) { return n % 2 == 0; }
+public static boolean isPositive(Integer n) { return n &gt;= 0; }
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_about_java_8_instance_method_references_continued">
+<h2>About Java 8 Instance Method References (Continued)</h2>
+<div class="paragraph"><p>Using the <code>Predicate</code></p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = n -&gt; IntPredicates.isOdd(n);
+Predicate&lt;Integer&gt; isEven = n -&gt; IntPredicates.isEven(n);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>We can always refer to those as:</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = IntPredicates::isOdd;
+Predicate&lt;Integer&gt; isEven = IntPredicate::isEven;</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>source: <a href="http://java.dzone.com/articles/java-lambda-expressions-vs">http://java.dzone.com/articles/java-lambda-expressions-vs</a></p></div>
+</section>
+
+<section class="slide" id="_what_does_that_mean_to_us">
+<h2>What does that mean to us?</h2>
+<div class="paragraph"><p>Inside of LocalDate.java</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>public static LocalDate from(TemporalAccessor temporal) {
+    Objects.requireNonNull(temporal, "temporal");
+    LocalDate date = temporal.query(TemporalQueries.localDate());
+    if (date == null) {
+        throw new DateTimeException("Unable to obtain LocalDate from TemporalAccessor: " +
+                temporal + " of type " + temporal.getClass().getName());
+    }
+    return date;
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_therefore_our_last_attempt">
+<h2>Therefore, our last attempt</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>dateFormatter.parse("Jan 19, 2014", LocalDate::from); // Jan 19, 2014</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_inoperabilility_with_legacy_code">
+<h2>Inoperabilility with Legacy Code</h2>
+<div class="ulist">
+<ul>
+<li><code>calendar.toInstant()</code> - converts the Calendar object to an Instant.</li>
+<li><code>gregorianCalendar.toZonedDateTime()</code> - converts a GregorianCalendar instance to a ZonedDateTime.</li>
+<li><code>gregorianCalendar.from(ZonedDateTime)</code> - creates a GregorianCalendar object using the default locale from a ZonedDateTime instance.</li>
+<li><code>date.from(Instant)</code> - creates a Date object from an Instant.</li>
+<li><code>date.toInstant()</code> - converts a Date object to an Instant.</li>
+<li><code>timeZone.toZoneId()</code> - converts a TimeZone object to a ZoneId.</li>
+</ul>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>GregorianCalendar gregorianCalendar = new GregorianCalendar();
+gregorianCalendar.toZonedDateTime();</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_conclusion">
+<h2>Conclusion</h2>
+<div class="ulist">
+<ul>
+<li>Lot to play with and enjoy</li>
+<li>Immutablity rules!</li>
+<li>The only learning curve is knowing the difference between <code>LocalDate</code>, <code>LocalTime</code>; <code>Period</code>, and <code>Duration</code></li>
+<li>Tight integration with Java 8 lambdas</li>
+<li>Nanosecond Resolution, not millseconds</li>
+<li>Should be considered with strong consideration</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_questions">
+<h2>Questions?</h2>
+
+</section>
+
+<section class="slide" id="_thank_you">
+<h2>Thank You</h2>
+<div class="ulist">
+<ul>
+<li>Email: <a href="mailto:dhinojosa@evolutionnext.com">dhinojosa@evolutionnext.com</a></li>
+<li>Twitter: @dhinojosa</li>
+<li>Google Plus: gplus.to/dhinojosa</li>
+<li>Linked In: www.linkedin.com/in/dhevolutionnext</li>
+</ul>
+</div>
+</section>
+
+<a class="deck-prev-link" href="#" title="Previous">&#8592;</a>
+<a class="deck-next-link" href="#" title="Next">&#8594;</a>
+<a class="deck-permalink" href="." title="Permalink to this slide">#</a>
+<script src="deck.js/jquery.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+<script src="deck.js/extensions/hash/deck.hash.js"></script>
+<script src="deck.js/extensions/scale/deck.scale.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="deck.js/extensions/split/deck.split.js"></script>
+<script>
+  (function($, deck, undefined) {
+    $.deck.defaults.keys['previous'] = [8, 33, 37, 39];
+    $.deck.defaults.keys['next'] = [13, 32, 34, 39];
+  
+    $.extend(true, $[deck].defaults, {
+        countNested: false
+    });
+  
+    $.deck('.slide');
+  })(jQuery, 'deck');
+</script>
+<style>
+  .slide.canvas-image {
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -moz-box-align: start;
+  -webkit-box-align: start;
+  -ms-box-align: start;
+  box-align: start;
+  -moz-box-pack: start;
+  -webkit-box-pack: start;
+  -ms-box-pack: start;
+  box-pack: start;}
+  
+  .bottom-left {
+    left: 1%;
+    bottom: 20%; }
+  
+  .top-left {
+    left: 1%;
+    top: 20%; }
+  
+  .bottom-right {
+    right: 1%;
+    bottom: 20%; }
+  
+  .top-right {
+    right: 1%;
+    top: 20%; }
+  
+  .center-up {
+    right: 50%;
+    top: 1%;
+  }
+  
+  .center-down {
+    right: 50%;
+    bottom: 1%;
+  }
+  .canvas-image .canvas-caption p {
+    text-align: center;
+    padding-top: 0;
+    padding: 0;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+    display: inline;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-size: 58px;
+    -webkit-box-shadow: 2px 2px 2px #000;
+    -moz-box-shadow: 2px 2px 2px #000;
+    box-shadow: 2px 2px 2px #000;
+    padding: 1rem;
+    color: white; }
+  kbd.keyseq { color: #555555; }
+  kbd:not(.keyseq) {
+    display: inline-block;
+    color: #222222;
+    font-size: 0.7em;
+    line-height: 1.4;
+    background-color: #F7F7F7;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    margin: -0.15em 0.15em 0 0.15em;
+    padding: 0.2em 0.6em;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  kbd kbd:first-child { margin-left: 0; }
+  kbd kbd:last-child { margin-right: 0; }
+</style>
+</body>
+</html>
