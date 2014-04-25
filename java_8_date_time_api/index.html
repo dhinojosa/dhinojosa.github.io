@@ -13,8 +13,8 @@
 <link href="../deck.js/extensions/hash/deck.hash.css" media="screen" rel="stylesheet">
 <link href="../deck.js/extensions/scale/deck.scale.css" media="screen" rel="stylesheet">
 <link href="../deck.js/extensions/navigation/deck.navigation.css" media="screen" rel="stylesheet">
-<link href="../deck.js/themes/style/web-2.0.css" media="screen" rel="stylesheet">
-<link href="../deck.js/themes/transition/horizontal-slide.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/style/danno.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/transition/fade.css" media="screen" rel="stylesheet">
 <link href="../deck.js/core/print.css" media="print" rel="stylesheet">
 <script src="../deck.js/modernizr.custom.js"></script>
 </head>
@@ -470,7 +470,7 @@ What is wrong with it?<div class="ulist">
 <div class="content">
 <pre><code>&gt; new java.util.GregorianCalendar
 
-java.util.GregorianCalendar = java.util.GregorianCalendar[time=1393764079082,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="America/New_York",offset=-18000000,dstSavings=3600000,useDaylight=true,transitions=235,lastRule=java.util.SimpleTimeZone[id=America/New_York,offset=-18000000,dstSavings=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2014,MONTH=2,WEEK_OF_YEAR=10,WEEK_OF_MONTH=2,DAY_OF_MONTH=2,DAY_OF_YEAR=61,DAY_OF_WEEK=1,DAY_OF_WEEK_IN_MONTH=1,AM_PM=0,HOUR=7,HOUR_OF_DAY=7,MINUTE=41,SECOND=19,MILLISECOND=82,ZONE_OFFSET=-18000000,DST_...</code></pre>
+java.util.GregorianCalendar = java.util.GregorianCalendar[time=1393764079082,areFieldsSet=true,areAllFieldsSet=true,lenient=true,zone=sun.util.calendar.ZoneInfo[id="America/New_York",offset=-18000000,dstSaving=3600000,useDaylight=true,transitions=235,lastRule=java.util.SimpleTimeZone[id=America/New_York,offset=-18000000,dstSaving=3600000,useDaylight=true,startYear=0,startMode=3,startMonth=2,startDay=8,startDayOfWeek=1,startTime=7200000,startTimeMode=0,endMode=3,endMonth=10,endDay=1,endDayOfWeek=1,endTime=7200000,endTimeMode=0]],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=1,YEAR=2014,MONTH=2,WEEK_OF_YEAR=10,WEEK_OF_MONTH=2,DAY_OF_MONTH=2,DAY_OF_YEAR=61,DAY_OF_WEEK=1,DAY_OF_WEEK_IN_MONTH=1,AM_PM=0,HOUR=7,HOUR_OF_DAY=7,MINUTE=41,SECOND=19,MILLISECOND=82,ZONE_OFFSET=-18000000,DST_...</code></pre>
 </div>
 </div>
 </section>
@@ -530,8 +530,7 @@ java.util.GregorianCalendar = java.util.GregorianCalendar[time=1393764079082,are
 <li><code>plus</code> - Returns a copy of the target object with the amount of time added</li>
 <li><code>minus</code> - Returns a copy of the target object with the amount of time subtracted</li>
 <li><code>to</code> - Converts this object to another object type</li>
-<li><code>at</code> - Combines the object with another
-==</li>
+<li><code>at</code> - Combines the object with another</li>
 </ul>
 </div>
 </section>
@@ -869,6 +868,81 @@ ZonedDateTime chicagoTime = ZonedDateTime.of(localDate, localTime, chicago);
 
 LocalDateTime localDateTime = LocalDateTime.of(1982, Month.APRIL, 17, 14, 11);
 ZonedDateTime jakartaTime = ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Jakarta"));</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_daylight_saving_time_begins">
+<h2>Daylight Saving Time Begins</h2>
+<div class="ulist">
+<ul>
+<li><p>
+In the summer<div class="ulist">
+<ul>
+<li>In the case of a gap, when clocks jump forward, there is no valid offset.</li>
+<li>Local date-time is adjusted to be later by the length of the gap</li>
+<li>For a typical one hour daylight savings change, the local date-time will be moved one hour later into the offset typically corresponding to "summer"</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_daylight_saving_time_exemplified">
+<h2>Daylight Saving Time Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDateTime date = LocalDateTime.of(2012, 11, 12, 13, 11, 12);
+date.atZone(ZoneId.of("America/Los_Angeles")) //2012-11-12T13:11:12-08:00[America/Los_Angeles]
+
+LocalDateTime daylightSavingTime = LocalDateTime.of(2014, 3, 9, 2, 0, 0, 0);
+daylightSavingTime.atZone(ZoneId.of("America/Denver")); //2014-03-09T03:00-06:00[America/Denver]
+
+LocalDateTime daylightSavingTime2 = LocalDateTime.of(2014, 3, 9, 2, 30, 0, 0);
+daylightSavingTime2.atZone(ZoneId.of("America/New_York")); //2014-03-09T03:30-04:00[America/New_York]
+
+LocalDateTime daylightSavingTime3 = LocalDateTime.of(2014, 3, 9, 2, 0, 0, 0);
+daylightSavingTime3.atZone(ZoneId.of("America/Phoenix")); //2014-03-09T03:59:59.999999999-05:00[America/Chicago]
+
+LocalDateTime daylightSavingTime4 = LocalDateTime.of(2014, 3, 9, 2, 59, 59, 999999999);
+daylightSavingTime4.atZone(ZoneId.of("America/Chicago")); //2014-03-09T02:00-07:00[America/Phoenix]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_daylight_saving_time_ends">
+<h2>Daylight Saving Time Ends</h2>
+<div class="ulist">
+<ul>
+<li><p>
+In the winter<div class="ulist">
+<ul>
+<li>In the case of an overlap, when clocks are set back, there are two valid offsets.</li>
+<li>This method uses the earlier offset typically corresponding to "summer".</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_standard_time_exemplified">
+<h2>Standard Time Exemplified</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>LocalDateTime date2 = LocalDateTime.of(2012, 11, 12, 13, 11, 12);
+date2.atZone(ZoneId.of("America/Los_Angeles"))); //2012-11-12T13:11:12-08:00[America/Los_Angeles]
+
+LocalDateTime standardTime = LocalDateTime.of(2014, 11, 2, 2, 0, 0, 0);
+standardTime.atZone(ZoneId.of("America/Denver")); //2014-11-02T02:00-07:00[America/Denver]
+
+LocalDateTime standardTime2 = LocalDateTime.of(2014, 11, 2, 2, 30, 0, 0);
+standardTime2.atZone(ZoneId.of("America/New_York")); //2014-11-02T02:30-05:00[America/New_York]
+
+LocalDateTime standardTime3 = LocalDateTime.of(2014, 11, 2, 2, 0, 0, 0);
+standardTime3.atZone(ZoneId.of("America/Phoenix")); //2014-11-02T02:00-07:00[America/Phoenix]
+
+LocalDateTime standardTime4 = LocalDateTime.of(2014, 11, 2, 2, 59, 59, 999999999);
+standardTime4.atZone(ZoneId.of("America/Chicago")); //2014-11-02T02:59:59.999999999-06:00[America/Chicago]</code></pre>
 </div>
 </div>
 </section>
@@ -1439,6 +1513,68 @@ gregorianCalendar.toZonedDateTime();</code></pre>
 </div>
 </section>
 
+<section class="slide" id="_clocks">
+<h2>Clocks</h2>
+<div class="ulist">
+<ul>
+<li>Providing access to the current instant, date and time using a time-zone</li>
+<li>Where time is derived for the API</li>
+<li><p>
+Multiple Clocks Provided<div class="ulist">
+<ul>
+<li>System Clock</li>
+<li>Fixed Clock</li>
+<li>Offset Clock</li>
+<li>Tick Clock</li>
+<li><code>abstract</code> class therefore make your own!</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_system_clock">
+<h2>System Clock</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Clock clock  = Clock.systemDefaultZone();
+LocalDate localDate = LocalDate.now(clock);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_fixed_clock">
+<h2>Fixed Clock</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Clock fixedClock = Clock.fixed(Instant.parse("2014-03-23T12:00:12Z"), ZoneId.of("America/Denver"));
+LocalDate localDate = LocalDate.now(fixedClock);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>(Perfect for Testing)</p></div>
+</section>
+
+<section class="slide" id="_offset_clock">
+<h2>Offset Clock</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Clock offsetClock = Clock.offset(Clock.system(ZoneId.of("America/New_York")), Duration.ofMinutes(30));
+LocalTime localTime = LocalTime.now(offsetClock); //Current Time plus 30 minutes</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_tick_clock">
+<h2>Tick Clock</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Clock tickClock = Clock.tick(Clock.system(ZoneId.of("America/New_York")), Duration.ofMinutes(30));
+LocalTime localDate = LocalTime.now(tickClock); //Current time rounded to the nearest 30 minutes</code></pre>
+</div>
+</div>
+</section>
+
 <section class="slide" id="_conclusion">
 <h2>Conclusion</h2>
 <div class="ulist">
@@ -1473,12 +1609,12 @@ gregorianCalendar.toZonedDateTime();</code></pre>
 <a class="deck-prev-link" href="#" title="Previous">&#8592;</a>
 <a class="deck-next-link" href="#" title="Next">&#8594;</a>
 <a class="deck-permalink" href="." title="Permalink to this slide">#</a>
-<script src="../deck.js/jquery.min.js"></script>
-<script src="../deck.js/core/deck.core.js"></script>
-<script src="../deck.js/extensions/hash/deck.hash.js"></script>
-<script src="../deck.js/extensions/scale/deck.scale.js"></script>
-<script src="../deck.js/extensions/navigation/deck.navigation.js"></script>
-<script src="../deck.js/extensions/split/deck.split.js"></script>
+<script src="deck.js/jquery.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+<script src="deck.js/extensions/hash/deck.hash.js"></script>
+<script src="deck.js/extensions/scale/deck.scale.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="deck.js/extensions/split/deck.split.js"></script>
 <script>
   (function($, deck, undefined) {
     $.deck.defaults.keys['previous'] = [8, 33, 37, 39];
