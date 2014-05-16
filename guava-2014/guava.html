@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="Asciidoctor 0.1.4" name="generator">
+<meta content="Daniel Hinojosa" name="author">
+<title>Guava</title>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+<link href="deck.js/core/deck.core.css" rel="stylesheet">
+<link href="deck.js/extensions/hash/deck.hash.css" media="screen" rel="stylesheet">
+<link href="deck.js/extensions/scale/deck.scale.css" media="screen" rel="stylesheet">
+<link href="deck.js/extensions/navigation/deck.navigation.css" media="screen" rel="stylesheet">
+<link href="deck.js/themes/style/danno.css" media="screen" rel="stylesheet">
+<link href="deck.js/themes/transition/fade.css" media="screen" rel="stylesheet">
+<link href="deck.js/core/print.css" media="print" rel="stylesheet">
+<script src="deck.js/modernizr.custom.js"></script>
+</head>
+<body class="deck-container article">
+<section class="slide" id="title-slide">
+<h1>Guava</h1>
+<span id="author">Daniel Hinojosa</span>
+<br>
+</section>
+<section class="slide" id="_making_java_bearable_with_guava_2014_edition">
+<h2>Making Java Bearable With Guava (2014 Edition)</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_dulles_airport">
+<h2>Dulles Airport</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Dulles Airport" height="60%" src="./images/dulles.png" width="60%">
+</div>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_who_is_this_for">
+<h2>Who is this for?</h2>
+<div class="ulist">
+<ul>
+<li>Any Java Developer not familiar with Guava</li>
+<li>People who have to use Java by company fiat</li>
+</ul>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_2014_edition">
+<h2>2014 Edition</h2>
+<div class="ulist">
+<ul>
+<li><p>
+What&#8217;s new?<div class="ulist">
+<ul>
+<li>Integration with Java 8</li>
+<li>Broom Filters</li>
+<li>Concurrency</li>
+</ul>
+</div></p></li>
+<li><p>
+What went away<div class="ulist">
+<ul>
+<li>Optional</li>
+<li>Splitters</li>
+<li>Joiners</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_where_can_i_get_the_code">
+<h2>Where can I get the code?</h2>
+<div class="paragraph"><p><a href="http://www.github.com/dhinojosa/usingguava">http://www.github.com/dhinojosa/usingguava</a></p></div>
+</section>
+
+<section class="slide" id="_what_is_it">
+<h2>What is it?</h2>
+<div class="ulist">
+<ul>
+<li>Indispensable set of utilities</li>
+<li>Additional and Immutable collections built upon JDK</li>
+<li>Open Source *</li>
+<li>Fully Generic Collections (unlike Apache Commons)</li>
+<li>Continually Growing (@Beta)</li>
+<li>Embrace DRY principle even more!</li>
+</ul>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_guava_collections">
+<h2>Guava Collections</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_bi_map">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");</code></pre>
+</div>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_bi_map_2">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador"</code></pre>
+</div>
+</div>
+
+<div style="page-break-after: always"></div>
+</section>
+
+<section class="slide" id="_bi_map_3">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador" 
+englishSpanishMap.put("fill", "llenar");</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_4">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador" 
+englishSpanishMap.put("fill", "llenar");
+englishSpanishMap.put("feed", "llenar");</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_5">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador" 
+englishSpanishMap.put("fill", "llenar");
+englishSpanishMap.put("feed", "llenar");</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p><span class="mono-red">IllegalArgumentException</span></p></div>
+</section>
+
+<section class="slide" id="_bi_map_6">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador" 
+englishSpanishMap.put("fill", "llenar");
+englishSpanishMap.forcePut("feed", "llenar");</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_7">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>HashBiMap&lt;String, String&gt; englishSpanishMap = 
+   HashBiMap.&lt;String, String&gt;create();
+
+englishSpanishMap.put("book", "libro");
+englishSpanishMap.put("cloud", "nube");
+englishSpanishMap.put("school", "escuela");
+englishSpanishMap.put("computer", "ordenador");
+ 
+englishSpanishMap.get("computer") =&gt; "ordenador" 
+englishSpanishMap.put("fill", "llenar");
+englishSpanishMap.forcePut("feed", "llenar");
+
+englishSpanishMap.toString() =&gt;
+   {computer=ordenador, school=escuela, 
+    book=libro, cloud=nube, feed=llenar}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_8">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>englishSpanishMap.toString() =&gt;
+{computer=ordenador, school=escuela, book=libro, cloud=nube, feed=llenar}
+ 
+BiMap&lt;String, String&gt; spanishEnglishMap = englishSpanishMap.inverse();
+ 
+spanishEnglishMap.toString() =&gt;
+{escuela=school, nube=cloud, ordenador=computer, llenar=feed, libro=book}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_9">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>spanishEnglishMap.put("futbol", "soccer");
+
+spanishEnglishMap.toString() =&gt;
+{escuela=school, nube=cloud, futbol=soccer, ordenador=computer, llenar=feed, libro=book}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_10">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>spanishEnglishMap.put("futbol", "soccer");
+
+spanishEnglishMap.toString() =&gt;
+{escuela=school, nube=cloud, futbol=soccer, ordenador=computer, llenar=feed, libro=book}
+
+englishSpanishMap.toString() =&gt;
+{computer=ordenador, school=escuela, book=libro, cloud=nube, soccer=futbol, feed=llenar}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_11">
+<h2>Bi-Map</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>BiMap&lt;String, String&gt; spanishEnglishMap =    
+    englishSpanishMap.inverse();</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multimap">
+<h2>Multimap</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ArrayListMultimap&lt;String, Integer&gt; 
+  superBowlMap =
+     ArrayListMultimap.create();</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>Different Flavors:
+<code>LinkedHashMultimap</code>, <code>LinkedListMultimap</code>, <code>TreeMultimap</code>,
+<code>HashMultimap</code>, <code>ListMultimap</code>, <code>SetMultimap</code>, <code>SortedSetMultimap</code></p></div>
+</section>
+
+<section class="slide" id="_multimap_2">
+<h2>Multimap</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>ArrayListMultimap&lt;String, Integer&gt; superBowlMap =
+   ArrayListMultimap.create();
+superBowlMap.put("Dallas Cowboys", 1972);
+superBowlMap.put("Dallas Cowboys", 1978);
+superBowlMap.put("Dallas Cowboys", 1993);
+superBowlMap.put("Dallas Cowboys", 1994);
+superBowlMap.put("Dallas Cowboys", 1996);
+superBowlMap.put("Pittsburgh Steelers", 1975);
+superBowlMap.put("Pittsburgh Steelers", 1976);
+superBowlMap.put("Pittsburgh Steelers", 1979);
+superBowlMap.put("Pittsburgh Steelers", 1980);
+superBowlMap.put("Pittsburgh Steelers", 2006);
+superBowlMap.put("Pittsburgh Steelers", 2009);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multimap_3">
+<h2>Multimap</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>superBowlMap.get("Dallas Cowboys").size() =&gt; 5
+superBowlMap.get("Pittsburgh Steelers").size() =&gt; 6
+superBowlMap.get("Buffalo Bills").size() =&gt; 0</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multiset_bag">
+<h2>Multiset (Bag)</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multiset&lt;String&gt; worldCupChampionships = 
+       HashMultiset.&lt;String&gt;create(); </code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>Different Flavors:
+<code>EnumMultiset</code>, <code>HashMultiset</code>, <code>ImmutableMultiset</code>,
+ <code>LinkedHashMultiset</code>, <code>TreeMultiset</code></p></div>
+</section>
+
+<section class="slide" id="_multiset_bag_2">
+<h2>Multiset (Bag)</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multiset&lt;String&gt; worldCupChampionships = 
+   HashMultiset.&lt;String&gt;create();
+
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+ 
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+
+=&gt; ["Brazil x 5", "Italy x 4"]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multiset_bag_3">
+<h2>Multiset (Bag)</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multiset&lt;String&gt; worldCupChampionships = 
+    HashMultiset.&lt;String&gt;create();
+
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+worldCupChampionships.add("Brazil");
+ 
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+worldCupChampionships.add("Italy");
+ 
+worldCupChampionships.add("Germany", 3); //explicitly add count
+
+=&gt; ["Brazil x 5", "Italy x 4", "Germany x 3"]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multiset_bag_4">
+<h2>Multiset (Bag)</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>worldCupChampionships.count("Brazil") =&gt; 5
+worldCupChampionships.count("Italy") =&gt; 4
+worldCupChampionships.count("Germany") =&gt; 3
+worldCupChampionships.count("United States") =&gt; 0 //Grr!</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_java_8_and_multisets">
+<h2>Java 8 and Multisets</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>worldCupChampionships.stream().forEach(t -&gt; System.out.println(t));</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>worldCupChampionships.stream().forEach(System.out::println);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Multiset&lt;String&gt; updatedWorldCupChampionships =
+  worldCupChampionships.stream().map((s) -&gt; String.format("Team %s", s))
+  .collect(Collectors.toCollection(HashMultiset::create));
+
+=&gt; [Team Brazil x 5, Team Italy x 4, Team Germany x 3]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutable_vs_unmodifiable">
+<h2>Immutable vs. Unmodifiable</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_unmodifiability_of_the_jdk">
+<h2>Unmodifiability of the JDK</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Set&lt;Integer&gt; intSet = new HashSet&lt;Integer&gt;();
+intSet.add(4);
+intSet.add(5);
+intSet.add(6);
+intSet.add(7);
+ 
+Set&lt;Integer&gt; unmodifiableSet = 
+   Collections.unmodifiableSet(intSet);
+unmodifiableSet.add(10);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p><span class="mono-red">UnsupportedOperationException</span></p></div>
+</section>
+
+<section class="slide" id="_unmodifiability_of_the_jdk_2">
+<h2>Unmodifiability of the JDK</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Set&lt;Integer&gt; intSet = new HashSet&lt;Integer&gt;();
+intSet.add(4);
+intSet.add(5);
+intSet.add(6);
+intSet.add(7);
+ 
+Set&lt;Integer&gt; unmodifiableSet = 
+   Collections.unmodifiableSet(intSet);
+intSet.add(10);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_unmodifiability_of_the_jdk_3">
+<h2>Unmodifiability of the JDK</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Set&lt;Integer&gt; intSet = new HashSet&lt;Integer&gt;();
+intSet.add(4);
+intSet.add(5);
+intSet.add(6);
+intSet.add(7);
+ 
+Set&lt;Integer&gt; unmodifiableSet = 
+   Collections.unmodifiableSet(intSet);
+intSet.add(10); // allowed
+unmodifiableSet.toString() =&gt; [4, 5, 6, 7, 10]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_not_immutable">
+<h2>Not Immutable</h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>You can&#8217;t modify the collection, but I can!</p></div>
+</blockquote>
+</div>
+</section>
+
+<section class="slide" id="_immutability">
+<h2>Immutability</h2>
+<div class="paragraph"><p>Guava contains factories to create actual immutable collections for:</p></div>
+
+<div class="ulist">
+<ul>
+<li><code>Map</code></li>
+<li><code>MultiSet</code></li>
+<li><code>MultiMap</code></li>
+<li><code>SortedSet</code></li>
+<li><code>SortedMap</code></li>
+<li><code>List</code></li>
+<li><code>Set</code></li>
+<li><code>BiMap</code></li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_immutablilty_with_code_of_code">
+<h2>Immutablilty with <code>of</code></h2>
+<div class="paragraph"><p><code>Immutable&lt;CollectionType&gt;.of(E1, E2, E3, E4)</code></p></div>
+</section>
+
+<section class="slide" id="_immutability_with_code_list_code">
+<h2>Immutability with <code>List</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List&lt;Integer&gt; integerList =   
+     ImmutableList.of(4, 4, 5, 6, 7);
+ 
+integerList.toString() =&gt; [4, 4, 5, 6, 7]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutability_with_code_set_code">
+<h2>Immutability with <code>Set</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Set&lt;Integer&gt; intSet = 
+    ImmutableSet.of(6, 7, 7, 8, 9, 10); 
+
+intSet.toString() =&gt; [6, 7, 8, 9, 10]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutability_with_code_map_code">
+<h2>Immutability with <code>Map</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; capitalMap = 
+      ImmutableMap.of(
+         "New Mexico", "Santa Fe",   
+         "Texas", "Austin",  
+         "Arizona", "Phoenix");
+ 
+capitalMap.toString() =&gt; 
+     New Mexico -&gt; Santa Fe, 
+     Texas -&gt; Austin, Arizona -&gt; Phoenix</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutability_with_code_bimap_code">
+<h2>Immutability with <code>BiMap</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>BiMap&lt;String, String&gt; biMap = ImmutableBiMap.of(
+                "book", "libro",
+                "cloud", "nube",
+                "school", "escuela",
+                "computer", "ordenador");
+ 
+biMap.toString() =&gt; 
+     {book=libro, cloud=nube, school=escuela, 
+         computer=ordenador}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutability_with_code_multimap_code">
+<h2>Immutability with <code>Multimap</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multimap&lt;String, Integer&gt; multiMap =
+   ImmutableMultimap.of
+      ("Dallas Cowboys", 1972,
+       "Dallas Cowboys", 1993,
+       "Dallas Cowboys", 1994,
+       "Dallas Cowboys", 1994,
+       "Dallas Cowboys", 1996);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_immutability_with_code_multimap_code_2">
+<h2>Immutability with <code>Multimap</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multimap&lt;String, Integer&gt; multiMap =
+   ImmutableMultimap.of
+      ("Dallas Cowboys", 1972,
+       "Dallas Cowboys", 1993,
+       "Dallas Cowboys", 1994,
+       "Dallas Cowboys", 1994,
+       "Dallas Cowboys", 1996);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p><span class="permanent-marker-red">But Dallas won in 1978 where is it?
+Where are the Steelers information I had earlier?</span></p></div>
+</section>
+
+<section class="slide" id="_the_limits_of_code_of_code">
+<h2>The Limits of <code>of</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multimap&lt;String, String&gt; multiMap = ImmutableMultimap.of(
+      "Dallas Cowboys", 1972, "Dallas Cowboys", 1993,
+      "Dallas Cowboys", 1994, "Dallas Cowboys", 1994,
+      "Dallas Cowboys", 1996, "Dallas Cowboys", 1978,
+      "Pittsburgh Steelers", 1975, "Pittsburgh Steelers", 1976,
+      "Pittsburgh Steelers", 1979, "Pittsburgh Steelers", 1980,
+      "Pittsburgh Steelers", 2006, "Pittsburgh Steelers", 2009);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p><span class="permanent-marker-red">Compile Time Exception</span> <span class="mono-red">Cannot Resolve Method</span></p></div>
+</section>
+
+<section class="slide" id="_immutability_with_builders">
+<h2>Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Immutable&lt;CollectionType&gt;.builder()</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_list_immutablity_with_builders">
+<h2>List Immutablity with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List&lt;Integer&gt; intList =
+    ImmutableList.&lt;Integer&gt;builder()
+       .add(1, 2, 3, 4, 5)
+       .addAll(Arrays.asList(6, 7, 8, 9, 10))
+       .build();
+
+intList.toString() =&gt; 
+    [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_set_immutability_with_builders">
+<h2>Set Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Set&lt;Integer&gt; intSet =
+   ImmutableSet.&lt;Integer&gt;builder()
+       .add(1, 2, 3, 4, 5)
+       .addAll(Arrays.asList(5, 6, 7, 8, 9, 10))
+       .build();
+
+intSet.toString() =&gt; [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_map_immutability_with_builders">
+<h2>Map Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; capitals = 
+   new ImmutableMap.Builder&lt;String, String&gt;()
+       .put("Brazil", "Brasilia")
+       .put("United States", "Washington, DC")
+       .put("Portugal", "Lisbon")
+       .build();
+
+capitals.toString() =&gt; 
+{Brazil=Brasilia, United States=Washington, DC, Portugal=Lisbon}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_bi_map_immutability_with_builders">
+<h2>Bi-Map Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>BiMap&lt;String, String&gt; biMap = ImmutableBiMap.
+      &lt;String, String&gt;builder()
+        .put("book", "libro")
+        .put("cloud", "nube")
+        .put("school", "escuela")
+        .put("computer",
+"ordenador").build();
+
+capitals.toString() =&gt; 
+{Brazil=Brasilia, United States=Washington, DC, Portugal=Lisbon}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multimap_immutability_with_builders">
+<h2>Multimap Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Multimap&lt;String, Integer&gt; multiMap = 
+  ImmutableMultimap.&lt;String, Integer&gt;builder()
+    .put("Dallas Cowboys", 1972).put("Dallas Cowboys", 1993)
+    .put("Dallas Cowboys", 1994).put("Dallas Cowboys", 1994)
+    .put("Dallas Cowboys", 1996).put("Dallas Cowboys", 1978)
+    .put("Pittsburgh Steelers", 1975)
+    .put("Pittsburgh Steelers", 1976)
+    .put("Pittsburgh Steelers", 1979)
+    .put("Pittsburgh Steelers", 1980)
+    .put("Pittsburgh Steelers", 2006)
+    .put("Pittsburgh Steelers", 2009).build();</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_multimap_immutability_with_builders_2">
+<h2>Multimap Immutability with Builders</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>multiMap.toString() =&gt; {Dallas Cowboys=[1972, 1993, 1994, 1994, 1996, 1978],
+   Pittsburgh Steelers=[1975, 1976, 1979, 1980, 2006, 2009]}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_and_functions">
+<h2>Predicates and Functions</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates">
+<h2>Predicates</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_2">
+<h2>Predicates</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = new Predicate&lt;Integer&gt;(){
+     public boolean apply(Integer input) {
+       return input % 2 != 0;
+     }
+};</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_3">
+<h2>Predicates</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = new Predicate&lt;Integer&gt;(){
+     public boolean apply(Integer input) {
+       return input % 2 != 0;
+     }
+};
+
+Collection&lt;Integer&gt; unfiltered =
+    Lists&lt;Integer&gt;.newArrayList
+      (1, 5, 6, 8, 9, 10, 44, 55, 19);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_4">
+<h2>Predicates</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = new Predicate&lt;Integer&gt;(){
+     public boolean apply(Integer input) {
+       return input % 2 != 0;
+     }
+};
+
+Collection&lt;Integer&gt; unfiltered =
+    Lists&lt;Integer&gt;.newArrayList
+      (1, 5, 6, 8, 9, 10, 44, 55, 19);
+
+Collections2.filter(unfiltered, isOdd).toString()
+=&gt;[1, 5, 9, 55, 19]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_5">
+<h2>Predicates</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = new Predicate&lt;Integer&gt;(){
+     public boolean apply(Integer input) {
+       return input % 2 != 0;
+     }
+};
+
+Collection&lt;Integer&gt; unfiltered =
+    Lists&lt;Integer&gt;.newArrayList
+      (1, 5, 6, 8, 9, 10, 44, 55, 19);
+
+Collections2.filter(unfiltered, isOdd).toString()
+=&gt;[1, 5, 9, 55, 19]
+
+unfiltered.toString()
+=&gt; [1, 5, 6, 8, 9, 10, 44, 55, 19]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_predicates_6">
+<h2>Predicates</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Predicate&lt;Integer&gt; isOdd = new Predicate&lt;Integer&gt;(){
+     public boolean apply(Integer input) {
+       return input % 2 != 0;
+     }
+};
+
+Collection&lt;Integer&gt; unfiltered =
+    Lists&lt;Integer&gt;.newArrayList
+      (1, 5, 6, 8, 9, 10, 44, 55, 19);
+
+Collections2.filter(unfiltered, isOdd).toString()
+=&gt;[1, 5, 9, 55, 19]
+
+unfiltered.toString()
+=&gt; [1, 5, 6, 8, 9, 10, 44, 55, 19]
+
+filtered.add(23); //Good
+unfiltered.contains(23) //Yes!</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_functions">
+<h2>Functions</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_functions_2">
+<h2>Functions</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Function&lt;Integer, Integer&gt; doubleIt = new 
+    Function&lt;Integer, Integer&gt;() {
+       public Integer apply(Integer from) {
+          return from * 2;
+       }
+    };</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_functions_3">
+<h2>Functions</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Function&lt;Integer, Integer&gt; doubleIt = new 
+    Function&lt;Integer, Integer&gt;() {
+       public Integer apply(Integer from) {
+          return from * 2;
+       }
+    };
+
+Collection&lt;Integer&gt; untransformed = Lists
+  .newArrayList
+     (1, 5, 6, 8, 9, 10, 44, 55, 19);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_functions_4">
+<h2>Functions</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Function&lt;Integer, Integer&gt; doubleIt = new 
+    Function&lt;Integer, Integer&gt;() {
+       public Integer apply(Integer from) {
+          return from * 2;
+       }
+    };
+
+Collection&lt;Integer&gt; untransformed = Lists
+  .newArrayList
+     (1, 5, 6, 8, 9, 10, 44, 55, 19);
+
+Collections2.transform(untransformed, doubleIt).toString()
+
+=&gt; [2, 10, 12, 16, 18, 20, 88, 110, 38]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_functions_5">
+<h2>Functions</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Function&lt;Integer, Integer&gt; doubleIt = new 
+    Function&lt;Integer, Integer&gt;() {
+       public Integer apply(Integer from) {
+          return from * 2;
+       }
+    };
+
+Collection&lt;Integer&gt; untransformed = Lists
+  .newArrayList
+     (1, 5, 6, 8, 9, 10, 44, 55, 19);
+
+Collections2.transform(untransformed, doubleIt).toString()
+
+=&gt; [2, 10, 12, 16, 18, 20, 88, 110, 38]
+
+untransformed.toString() =&gt; [1, 5, 6, 8, 9, 10, 44, 55, 19]");</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_utilities">
+<h2>Utilities</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_utilities_2">
+<h2>Utilities</h2>
+<div class="paragraph"><p>Simple Rule: Use the Plural of the Class for the utility you need.</p></div>
+</section>
+
+<section class="slide" id="_utilities_3">
+<h2>Utilities</h2>
+<div class="paragraph"><p>Simple Rule: Use the Plural of the Class for the utility you need.</p></div>
+
+<div class="paragraph"><p><code>Booleans</code>, <code>Longs</code>, <code>Ints</code>, <code>Floats</code>, <code>Iterables</code>, <code>Iterators</code>,
+<code>Lists</code>, <code>Longs</code>, <code>Maps</code>, <code>Objects</code>, <code>Multimaps</code>, <code>ObjectArrays</code>,
+<code>Strings</code>, <code>Shorts</code>, <code>SignedBytes</code>, <code>Sets</code>, <code>Predicates</code>,
+<code>Multisets</code>, <code>Multimaps</code>, <code>BiMaps</code>, <code>Functions</code>, <code>Bytes</code></p></div>
+</section>
+
+<section class="slide" id="_objects">
+<h2>Objects</h2>
+<div class="paragraph"><p>Instead of:</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>if (a != null) return a.equals(b);
+ return b != null &amp;&amp; b.equals(a);</code></pre>
+</div>
+</div>
+
+<div class="paragraph"><p>Prefer:</p></div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Objects.equal(a,b)</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_lists">
+<h2>Lists</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Lists.newArrayList ("one, "two", "three")</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Lists.newLinkedList(1, 2, 3, 4, 5)</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Lists.reverse(someList)</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Lists.transform(list, function)</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_maps">
+<h2>Maps</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.newHashMap();</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.newEnumMap();</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.newLinkedHashMap();</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.newConcurrentMap();</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.newTreeMap();</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_maps_2">
+<h2>Maps</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.difference(map1,map2).entriesInCommon();</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.filterEntries(map, predicate);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.filterKeys(map, predicate);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.filterValues(map, predicate);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.transformEntries(map, function);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Maps.transformValues(map, function);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_finding_differences">
+<h2>Finding Differences</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; stateCaps =
+     ImmutableMap.&lt;String, String&gt;builder()
+        .put("Tallahassee", "Florida")
+        .put("Santa Fe", "New Mexico")
+        .put("Trenton", "New Jersey")
+        .put("Olympia", "Washington")
+        .put("Albany", "New York").build();
+Map&lt;String, String&gt; stateCaps2 =
+     ImmutableMap.&lt;String, String&gt;builder()
+        .put("Tallahassee", "Florida")
+        .put("Raleigh", "North Carolina")
+        .put("Bismarck", "North Dakota").build();
+MapDifference&lt;String, String&gt; diff =
+     Maps.difference(stateCaps, stateCaps2);
+diff.entriesOnlyOnLeft().size() =&gt; 4
+diff.entriesOnlyOnRight().size() =&gt; 2</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_finding_common_entries">
+<h2>Finding Common Entries</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; stateCaps =
+     ImmutableMap.&lt;String, String&gt;builder()
+        .put("Tallahassee", "Florida")
+        .put("Santa Fe", "New Mexico")
+        .put("Trenton", "New Jersey")
+        .put("Olympia", "Washington")
+        .put("Albany", "New York").build();
+Map&lt;String, String&gt; stateCaps2 =
+     ImmutableMap.&lt;String, String&gt;builder()
+        .put("Tallahassee", "Florida")
+        .put("Raleigh", "North Carolina")
+        .put("Bismarck", "North Dakota").build();
+Map&lt;String, String&gt; common = Maps.difference(stateCaps,
+    stateCaps2).entriesInCommon();
+common.size() =&gt; 1
+common.get("Tallahassee") =&gt; Florida</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_predicate_and_filter_values">
+<h2>Using Predicate and Filter Values</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Map&lt;String, String&gt; stateCaps =
+    ImmutableMap.&lt;String,String&gt;builder()
+    .put("Tallahassee", "Florida")
+    .put("Santa Fe", "New Mexico")
+    .put("Trenton", "New Jersey")
+    .put("Olympia", "Washington")
+    .put("Albany", "New York").build();
+Predicate&lt;CharSequence&gt; startsWithNew =
+     Predicates.containsPattern("New.*");
+Map&lt;String, String&gt; filtered =
+      Maps.filterValues(stateCaps,startsWithNew);
+filtered.size(); =&gt; 3</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_iterables">
+<h2>Iterables</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.concat(list1, list2);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.elementsEqual(list1, list2);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.cycle(list);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.filter(list, clazz);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_iterables_continued">
+<h2>Iterables (Continued)</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.filter(list, predicate);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.partition(list, size);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.paddedPartition(list, size);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.transform(list, function);</code></pre>
+</div>
+</div>
+
+<div class="listingblock">
+<div class="content">
+<pre><code>Iterables.tryFind(list, predicate);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_cycle">
+<h2>Using Cycle</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List&lt;Integer&gt; list = Lists.newArrayList(1, 2, 3, 4, 5);
+Iterable iterable = Iterables.cycle(list);
+Iterator it = iterable.iterator();
+for (int i = 0; i &lt; 1000; i++){
+  it.next();
+} =&gt; 1</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_partition">
+<h2>Using Partition</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List&lt;Integer&gt; list =
+   Lists.newArrayList(1, 2, 3, 4, 5);
+Iterable iterable =
+   Iterables.partition(list, 2);
+Iterator it = iterable.iterator();
+it.next(); =&gt; List(1, 2)
+it.next(); =&gt; List(3, 4)
+it.next(); =&gt; List(5);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_padded_partition">
+<h2>Using Padded Partition</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List&lt;Integer&gt; list =
+   Lists.newArrayList(1, 2, 3, 4, 5);
+Iterable iterable =
+   Iterables.partition(list, 2);
+Iterator it = iterable.iterator();
+it.next(); =&gt; List(1, 2)
+it.next(); =&gt; List(3, 4)
+it.next(); =&gt; List(5);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_strings">
+<h2>Using Strings</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Strings.isNullOrEmpty(string)
+Strings.nullToEmpty(string)
+Strings.padEnd(string, minLength, char)
+Strings.padStart(string, minLength, char)
+Strings.repeat(string, times)</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_moral_of_the_story">
+<h2>Moral of the Story</h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>If it feels like someone else has already developed what you are trying to, do look it up.</p></div>
+</blockquote>
+</div>
+</section>
+
+<section class="slide" id="_ordering">
+<h2>Ordering</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_2">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class StarWarsEpisode {
+       private String name;
+       private int number;
+       private int year;
+    
+       //getters, toString, hashCode, equals
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_3">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class StarWarsCharacter implements 
+     Comparable&lt;StarWarsCharacter&gt; {
+        private String name;
+        private StarWarsEpisode firstAppearance;
+  
+        //getters, toString, hashCode, equals
+
+        public int compareTo(StarWarsCharacter o) {
+            return this.name.compareTo(o.name) +
+                    this.firstAppearance.getYear() -
+                    o.firstAppearance.getYear();
+    }
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_4">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>aNewHope = new StarWarsEpisode
+          ("A New Hope", 4, 1977);
+empireStrikesBack = new StarWarsEpisode
+          ("The Empire Strikes Back", 5, 1980);
+returnOfTheJedi = new StarWarsEpisode
+          ("Return Of The Jedi", 6, 1983);
+phantomMenace = new StarWarsEpisode
+          ("The Phantom Menace", 1, 1999);
+attackOfTheClones = new StarWarsEpisode
+          ("Attack Of The Clones", 2, 2002);
+revengeOfTheSith = new StarWarsEpisode
+          ("Revenge Of The Sith", 3, 2005);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_5">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>hanSolo = new StarWarsCharacter
+          ("Han Solo", aNewHope); 
+lukeSkywalker = new StarWarsCharacter
+          ("Luke Skywalker", aNewHope); 
+princessLeia = new StarWarsCharacter
+          ("Princess Leia", aNewHope); 
+landoCalrissian = new StarWarsCharacter
+          ("Lando Calrissian", empireStrikesBack); 
+bobaFett = new StarWarsCharacter
+          ("Boba Fett", empireStrikesBack);</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_6">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class StarWarsEpisodeYearComparator
+   implements Comparator&lt;StarWarsEpisode&gt; {
+      public int compare (StarWarsEpisode o1, 
+                          StarWarsEpisode o2) {
+            return o1.getYear() - o2.getYear();
+      } 
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_7">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Ordering.from(
+     new StarWarsEpisodeYearComparator())
+        .max(aNewHope, phantomMenace)
+ 
+=&gt; phantomMenace</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_8">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class StarWarsCharacterNameComparator implements
+   Comparator&lt;StarWarsCharacter&gt; {
+      public int compare(StarWarsCharacter o1,
+                         StarWarsCharacter o2) {
+         return o1.getName().compareTo(o2.getName());
+     } 
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_9">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Ordering.from(new StarWarsCharacterYearComparator())
+    .compound(new StarWarsCharacterNameComparator())
+    .sortedCopy(Lists.newArrayList(
+                bobaFett,princessLeia,
+                landoCalrissian, lukeSkywalker,
+                hanSolo)).toString();
+
+=&gt; ["Han Solo", "Luke Skywalker", "Princess Leia",
+    "Boba Fett", "Lando Calrissian"]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_10">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Ordering&lt;String&gt; byLengthOrdering = 
+       new Ordering&lt;String&gt;() {
+            public int compare(String left, String right) {
+                return (left.length() - right.length());
+            }
+        };
+
+byLengthOrdering.max(hanSolo.getName(),                  
+                     lukeSkywalker.getName(), 
+                     princessLeia.getName())
+
+=&gt; "Luke Skywalker"</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_11">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Ordering.explicit(phantomMenace,
+    attackOfTheClones, revengeOfTheSith,
+    returnOfTheJedi, aNewHope,
+    empireStrikesBack).max(revengeOfTheSith, aNewHope);
+
+=&gt; aNewHope</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_12">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>byLengthOrdering = new Ordering&lt;String&gt;() {
+            public int compare(String left, String right) {
+                return (left.length() - right.length());
+            }
+        };
+ 
+byLengthOrdering.nullsLast()
+       .sortedCopy(Arrays.asList(hanSolo.getName(), null, 
+            lukeSkywalker.getName(), null,
+                princessLeia.getName())).toString()
+
+=&gt; ["Han Solo", "Princess Leia", "Luke Skywalker", null, null]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_13">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>byLengthOrdering = new Ordering&lt;String&gt;() {
+            public int compare(String left, String right) {
+                return (left.length() - right.length());
+            }
+}; 
+ 
+byLengthOrdering.isOrdered
+        (Arrays.asList(hanSolo.getName(),
+                       princessLeia.getName(), 
+                       lukeSkywalker.getName(), 
+                       lukeSkywalker.getName())
+=&gt; true</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_14">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>byLengthOrdering = new Ordering&lt;String&gt;() {
+            public int compare(String left, String right) {
+                return (left.length() - right.length());
+            }
+}; 
+ 
+byLengthOrdering.isStrictlyOrdered
+        (Arrays.asList(hanSolo.getName(),
+                       princessLeia.getName(), 
+                       lukeSkywalker.getName(), 
+                       lukeSkywalker.getName())
+=&gt; false</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_15">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>StarWarsCharacterNameComparator
+    starWarsCharacterNameComparator = new
+         StarWarsCharacterNameComparator();
+        
+StarWarsCharacter key = new
+       StarWarsCharacter("Princess Leia", null);
+ 
+Ordering.from(starWarsCharacterNameComparator)
+    .binarySearch(Arrays.asList(bobaFett, hanSolo,
+                  landoCalrissian, lukeSkywalker, 
+                  princessLeia), key) 
+=&gt; 4</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_16">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class StarWarsCharacter implements 
+     Comparable&lt;StarWarsCharacter&gt; {
+        private String name;
+        private StarWarsEpisode firstAppearance;
+  
+        //getters, toString, hashCode, equals
+
+        public int compareTo(StarWarsCharacter o) {
+            return this.name.compareTo(o.name) +
+                    this.firstAppearance.getYear() -
+                    o.firstAppearance.getYear();
+    }
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_ordering_17">
+<h2>Ordering</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Ordering.natural()
+     .sortedCopy(Arrays.asList
+         (bobaFett, hanSolo, lukeSkywalker,
+            princessLeia, landoCalrissian)).toString()
+
+=&gt;["Boba Fett", "Han Solo", "Lando Calrissian", "Luke Skywalker", "Princess Leia"]</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_event_stream">
+<h2>Event Stream</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="Small Guava Image" height="60%" src="./images/guava.png" width="60%">
+</div>
+</div>
+</section>
+
+<section class="slide" id="_event_stream_2">
+<h2>Event Stream</h2>
+<div class="ulist">
+<ul>
+<li>Dispatches Events</li>
+<li>Easier than the <code>java.util.Observer</code> and <code>java.util.Observable</code></li>
+<li>Requires the components to explicitly register with one another</li>
+<li>Posters, Handlers, Dead Events</li>
+</ul>
+</div>
+</section>
+
+<section class="slide" id="_broadcast_event">
+<h2>Broadcast Event</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class BroadcastEvent {
+  private String message;
+
+  public BroadcastEvent(String message) {
+     this.message = message;
+  }
+
+  public String getMessage() {
+     return message;
+  }
+
+  //equals, hashcode, toString
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_broadcaster">
+<h2>Broadcaster</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class Broadcaster {
+   private EventBus eventBus;
+
+   public void setEventBus(EventBus eventBus) {
+      this.eventBus = eventBus;
+   }
+
+   public void broadcastToAll() {
+      this.eventBus.post(
+      new BroadcastEvent("The Guava Revolution
+          will not be televised"));
+   }
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_brodcast_event">
+<h2>Brodcast Event</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class BroadcastEvent {
+   private String message;
+
+   public BroadcastEvent(String message) {
+      this.message = message;
+   }
+
+   public String getMessage() {
+      return message;
+   }
+
+   //equals, hashcode, toString
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_subscriber">
+<h2>Subscriber</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public class Subscriber {
+   private List&lt;String&gt; messages =
+        Lists.newArrayList();
+
+   @Subscribe
+   public void eventOccured(BroadcastEvent event) {
+      messages.add(event.getMessage());
+   }
+
+   public int getCount() {
+      return messages.size();
+   }
+
+   public List&lt;String&gt; getMessages() {
+      return ImmutableList.copyOf(messages);
+   }
+}</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_using_the_event_bus">
+<h2>Using the Event Bus</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>EventBus eventBus = new EventBus();
+Subscriber subscriber = new Subscriber();
+eventBus.register(subscriber);
+
+Broadcaster broadcaster = new Broadcaster();
+broadcaster.setEventBus(eventBus);
+
+broadcaster.broadcastToAll();
+broadcaster.broadcastToAll();
+broadcaster.broadcastToAll();
+
+subscriber.getCount() =&gt; 3</code></pre>
+</div>
+</div>
+</section>
+
+<section class="slide" id="_questions">
+<h2>Questions?</h2>
+
+</section>
+
+<section class="slide" id="_thank_you">
+<h2>Thank You</h2>
+<div class="ulist">
+<ul>
+<li>Email: <a href="mailto:dhinojosa@evolutionnext.com">dhinojosa@evolutionnext.com</a></li>
+<li>Github: <a href="https://www.github.com/dhinojosa">https://www.github.com/dhinojosa</a></li>
+<li>Twitter: <a href="http://twitter.com/dhinojosa">http://twitter.com/dhinojosa</a></li>
+<li>Google Plus: <a href="http://gplus.to/dhinojosa">http://gplus.to/dhinojosa</a></li>
+<li>Linked In: <a href="http://www.linkedin.com/in/dhevolutionnext">http://www.linkedin.com/in/dhevolutionnext</a></li>
+</ul>
+</div>
+</section>
+
+<a class="deck-prev-link" href="#" title="Previous">&#8592;</a>
+<a class="deck-next-link" href="#" title="Next">&#8594;</a>
+<a class="deck-permalink" href="." title="Permalink to this slide">#</a>
+<script src="deck.js/jquery.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+<script src="deck.js/extensions/hash/deck.hash.js"></script>
+<script src="deck.js/extensions/scale/deck.scale.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="deck.js/extensions/split/deck.split.js"></script>
+<script>
+  (function($, deck, undefined) {
+    $.deck.defaults.keys['previous'] = [8, 33, 37, 39];
+    $.deck.defaults.keys['next'] = [13, 32, 34, 39];
+  
+    $.extend(true, $[deck].defaults, {
+        countNested: false
+    });
+  
+    $.deck('.slide');
+  })(jQuery, 'deck');
+</script>
+<style>
+  .slide.canvas-image {
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -moz-box-align: start;
+  -webkit-box-align: start;
+  -ms-box-align: start;
+  box-align: start;
+  -moz-box-pack: start;
+  -webkit-box-pack: start;
+  -ms-box-pack: start;
+  box-pack: start;}
+  
+  .bottom-left {
+    left: 1%;
+    bottom: 20%; }
+  
+  .top-left {
+    left: 1%;
+    top: 20%; }
+  
+  .bottom-right {
+    right: 1%;
+    bottom: 20%; }
+  
+  .top-right {
+    right: 1%;
+    top: 20%; }
+  
+  .center-up {
+    right: 50%;
+    top: 1%;
+  }
+  
+  .center-down {
+    right: 50%;
+    bottom: 1%;
+  }
+  .canvas-image .canvas-caption p {
+    text-align: center;
+    padding-top: 0;
+    padding: 0;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+    display: inline;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-size: 58px;
+    -webkit-box-shadow: 2px 2px 2px #000;
+    -moz-box-shadow: 2px 2px 2px #000;
+    box-shadow: 2px 2px 2px #000;
+    padding: 1rem;
+    color: white; }
+  kbd.keyseq { color: #555555; }
+  kbd:not(.keyseq) {
+    display: inline-block;
+    color: #222222;
+    font-size: 0.7em;
+    line-height: 1.4;
+    background-color: #F7F7F7;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    margin: -0.15em 0.15em 0 0.15em;
+    padding: 0.2em 0.6em;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  kbd kbd:first-child { margin-left: 0; }
+  kbd kbd:last-child { margin-right: 0; }
+</style>
+</body>
+</html>
