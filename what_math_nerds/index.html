@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="Asciidoctor 1.5.2" name="generator">
+<meta content="Daniel Hinojosa" name="author">
+<title>What the hell are math nerds talking about?</title>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css" rel="stylesheet">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+<script>document.addEventListener('DOMContentLoaded', prettyPrint)</script>
+<link href="../deck.js/core/deck.core.css" rel="stylesheet">
+<link href="../deck.js/extensions/scale/deck.scale.css" media="screen" rel="stylesheet">
+<link href="../deck.js/extensions/navigation/deck.navigation.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/style/modern.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/transition/fade.css" media="screen" rel="stylesheet">
+<link href="./stylesheets/custom.css" rel="stylesheet">
+<link href="../deck.js/core/print.css" media="print" rel="stylesheet">
+<script src="../deck.js/modernizr.custom.js"></script>
+</head>
+<body class="article">
+<div class="deck-container">
+<section class="slide" id="title-slide">
+<h1>What the hell are math nerds talking about?</h1>
+<span id="author">Daniel Hinojosa</span>
+<br>
+</section>
+<div id="preamble">
+<div class="sectionbody">
+<div style="page-break-after: always"></div>
+</div>
+</div>
+<section class="slide canvas-image" id="_oftentimes_it_is_rough_trying_understand_what_the_nerds_are_talking_about" style="background-image: url(images/nerds.gif)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_functional_programmers_are_often_seen_as_nuts" style="background-image: url(images/crazyfunctionalprogrammers.png)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_purpose_for_this_presentation">
+<h2>Purpose for this presentation</h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>Distill some of the more difficult terms in functional programming, show it in Haskell and on as many possible languages of the JVM</p></div>
+</blockquote>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_part_1_of_this_presentation">
+<h2>Part 1 of this presentation</h2>
+<div class="ulist">
+<ul>
+<li>Higher order functions</li>
+<li>Type classes</li>
+<li>Ad-hoc Polymorphism,</li>
+<li>Types vs. kinds</li>
+<li>Functors</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_all_hail_from_haskell" style="background-image: url(images/AllHailHaskell.png)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_haskell">
+<h2>Haskell</h2>
+<div class="ulist">
+<ul>
+<li>"Pure" Functional Language</li>
+<li>Simon Peyton Jones, Lennart Augustsson, Eric Meijer, Philip Wadler</li>
+<li>Designed in 1990</li>
+<li><strong>static</strong>, <strong>strong</strong>, and <strong>inferred</strong></li>
+<li>Cross Platform</li>
+<li>Compiled &amp; Interpreted</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_shall_we_start_with_hello_world_hell_no" style="background-image: url(images/monadsoldlady.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_haskell_basic_types">
+<h2>Haskell Basic Types</h2>
+<div class="ulist">
+<ul>
+<li><code>Int</code> - Bounded Integer</li>
+<li><code>Integer</code> - Unbounded Integer</li>
+<li><code>Float</code> - Floating Point</li>
+<li><code>Double</code> - Double Precision</li>
+<li><code>Bool</code> - Boolean</li>
+<li><code>Char</code> - Character (String are list of chars)</li>
+<li><code>Tuples</code> - Types surrounded by parenthesis</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_basic_method_in_haskell">
+<h2>Basic Method in Haskell</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>isOdd :: Int -&gt; Bool
+isOdd x = (x `mod` 2) /= 0</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_is_code_mod_code_with_the_backticks">
+<h2>What is <code>mod</code> with the backticks?</h2>
+<div class="paragraph"><p>First off, here is the signature.
+What the hell is <code>a</code>?</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>mod :: Integral a =&gt; <span class="mono-bold-green">a -&gt; a -&gt; a</span></code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Take 2, and Returns 1</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_look_at_mod_a_different_way">
+<h2>Look at mod a different way</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(mod 5 2)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This would work and return <code>1</code></p></div>
+<div class="paragraph"><p>Since it is a Take 2 and Return 1&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>5 `mod` 2</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_another_function">
+<h2>Another Function!</h2>
+<div class="paragraph"><p>Specifying the types before the method</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>sumThree :: <span class="mono-bold-green">Int -&gt; Int -&gt; Int</span> -&gt; Int
+            <span class="mono-bold-green">|---- Take 3-----|</span></code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_combine_with_the_implementation_of_code_sumthree_code">
+<h2>Combine with the implementation of <code>sumThree</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>sumThree :: Int -&gt; Int -&gt; Int -&gt; Int
+sumThree x y z = x + y + z</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>To actually run <code>sumThree</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>sumThree 1 2 3</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: <code>x</code>, <code>y</code>, <code>z</code> is pattern matched</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_currying">
+<h2>Currying</h2>
+<div class="paragraph"><p>Another way to look at <code>sumThree</code> is through currying&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>sumThree :: Int -&gt; Int -&gt; Int -&gt; Int
+sumThree x y z = x + y + z</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>I can partially apply <code>sumThree</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>let f = sumThree 2 1</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>f(4) -- 7</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_type_variables">
+<h2>Type Variables</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>myHead :: [a] -&gt; a
+myHead [] = error "empty list"
+myHead [x] = x
+myHead (x:xs) = x</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This is analogous to in Java:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>public A &lt;A&gt; myHead(List&lt;A&gt; list) {...}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_filtering_with_haskell_lambdas">
+<h2>Filtering with Haskell lambdas</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>filter (\x -&gt; x `mod` 2 /= 0) [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Becomes:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[1,3]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_filtering_with_predefined_functions">
+<h2>Filtering with predefined functions</h2>
+<div class="paragraph"><p>Remember this?</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>isOdd :: Int -&gt; Bool
+isOdd x = (x `mod` 2) /= 0</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>We can apply it to as a function, since <em>it is</em> a function!</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>filter f [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Evaluates to&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[1,3]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_mapping_with_haskell_lambdas">
+<h2>Mapping with Haskell Lambdas</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>map (\x -&gt; x * 3) [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Becomes:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[3,6,9,12]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_mapping_with_haskell_postfix_lambdas">
+<h2>Mapping with Haskell Postfix Lambdas</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>map (3*) [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Becomes:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[3,6,9,12]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_map_is_an_interesting_signature">
+<h2>Map is an interesting signature</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>map :: [a] -&gt; <span class="mono-bold-green">(a -&gt; b)</span> -&gt; [b]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This is a <strong>higher order function</strong>!</p></div>
+<div class="paragraph"><p>Note: <code>b</code> can represent another type</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_looking_at_code_map_code_again">
+<h2>Looking at <code>map</code> again&#8230;&#8203;</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>map (3*) [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Since <code>b</code> can be another type, therefore we can do&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>map (\i -&gt; "Hello " ++ show i) [1,2,3,4]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Evaluates to&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>["Hello 1", "Hello 2", "Hello 3", "Hello 4"]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>FYI: Show converts anything to String when it can.</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_trying_another_higher_order_function">
+<h2>Trying another higher order function</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>myZipWith :: (a -&gt; b -&gt; c) -&gt; [a] -&gt; [b] -&gt; [c]
+myZipWith _ [] _ = []
+myZipWith _ _ [] = []
+myZipWith f (x:xs) (y:ys) = f x y : myZipWith f xs ys</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Simple Case:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>myZipWith (+) [1,2,3] [4,5,6]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Evaluates To:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[5, 7, 9]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Higher Difficulty Case:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>let a = [1,2,3,4,5,6]
+let b = ["Rock", "Jazz", "Country", "Salsa", "Polka", "Hip Hop"]
+putStrLn (show $ myZipWith (\i s -&gt; s ++ " " ++ show i) a b)</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_does_using_a_higher_function_look_like_in_java">
+<h2>What does using a higher function look like in Java?</h2>
+<div class="paragraph"><p>Not really a higher order function but close a function into a method&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>static &lt;A,B,C&gt; Stream&lt;C&gt; zip(Stream&lt;? extends A&gt; a,
+      Stream&lt;? extends B&gt; b,
+      BiFunction&lt;? super A,? super B,? extends C&gt; zipper)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>How do we use it?</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>let a = Arrays.asList(1,2,3,4,5,6);
+let b = Arrays.asList("Rock", "Jazz", "Country",
+                      "Salsa", "Polka", "Hip Hop");
+Streams.zip(a.stream(),
+            b.stream(),
+            (x, y) -&gt; y + " " + x).
+               collect(Collectors.toList())</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: Using it wasn&#8217;t bad, but if you had to create your own <code>zip</code>, rough</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_higher_order_functions_in_scala">
+<h2>Higher Order Functions in Scala</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>val a = List(1,2,3,4,5,6)
+val b = List("Rock", "Jazz", "Country", "Salsa", "Polka", "Hip Hop")
+a.zip(b).map{case (i,s) =&gt; s + " " + i}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_higher_order_functions_in_groovy">
+<h2>Higher Order Functions in Groovy</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>def a  = [1,2,3,4,5,6]
+def b  = ["Rock","Jazz","Country","Salsa","Polka","Hip Hop"]
+[a,b].transpose().collect{x -&gt; x[1] + " " + x[0]}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_higher_order_functions_in_clojure">
+<h2>Higher Order Functions in Clojure</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(def a [1 2 3 4 5 6])
+(def b ["Rock" "Jazz" "Country" "Salsa" "Polka" "Hip Hop"])
+(map #(str %2 " " %1) a b)</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_type_classes">
+<h2>Type Classes</h2>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_imagine" style="background-image: url(images/Imagine.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_that_we_can_do_this_in_java">
+<h2>That we can do this in Java</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>interface Eq &lt;A&gt; {
+    public boolean equals (A a, A b);
+    default public boolean notEquals (A a, A b) {
+      return !equals(a,b)
+    }
+}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_lets_make_an_instance_for_code_eq_code_and_say_for_type_code_cow_code">
+<h2>Lets Make an Instance for <code>Eq</code> and say for type <code>Cow</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>package com.example.cowtypeclasses
+
+public class CowEquivalenceByName implements Eq&lt;Cow&gt; {
+    public boolean equals (Cow a, Cow b) {
+       a.getName().equals(b.getName());
+    }
+}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_now_lets_say_we_can_bind_this_in_scope">
+<h2>Now lets say we can "bind" this in scope</h2>
+<div class="paragraph"><p>In other words&#8230;&#8203;</p></div>
+<div class="ulist">
+<ul>
+<li>By implementing an interface, we make this object available for anything that needs to use it.</li>
+<li>We have the power to <code>import</code> this <code>CowEquivalence</code> when ever we need to strategically use it.</li>
+<li>We can choose another implementation of Cow if we have another equivalence strategy</li>
+<li>Think of a Strategy Pattern that instead of setters we use imports!</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_other_ways_to_look_at_it">
+<h2>Other ways to look at it</h2>
+<div class="paragraph"><p>If we have the ability to create both classes in the same package (Java doesn&#8217;t do this I know)</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>package com.example.cowtypeclasses
+public class CowEquivalenceByName {...}
+public class CowEquivalenceByWeight {...}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>In some random method in some other package&#8230;&#8203;I can do</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>public void foo(Cow a, Cow b) {
+   import com.example.cowtypeclasses.CowEquivalenceByWeight
+   a.equals(b); //true if equal weight!
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>That&#8217;s a type class!</strong></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_coming_back_to_haskell">
+<h2>Coming back to Haskell</h2>
+<div class="paragraph"><p>First off:</p></div>
+<div class="ulist">
+<ul>
+<li>There are no objects in Haskell. Get That?</li>
+<li>This is a functional language!</li>
+<li>Damn it! Listen to me I&#8217;m serious!</li>
+</ul>
+</div>
+<div class="paragraph"><p>What Haskell has are "Algebraic Data Types"!</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>data GameResult = Win | Loss | Tie</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_does_the_code_eq_code_type_class_look_like">
+<h2>What does the <code>Eq</code> type class look like?</h2>
+<div class="paragraph"><p>This is already built into Haskell</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Eq a where
+    (==) :: a -&gt; a -&gt; Bool
+    (/=) :: a -&gt; a -&gt; Bool
+    x == y = not (x /= y)
+    x /= y = not (x == y)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Warning: <code>class</code> is not a Java <code>class</code>. It is a type class!</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_now_we_will_make_an_code_instance_code_of_the_type_class">
+<h2>Now we will make an <code>instance</code> of the type class:</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Eq GameResult where
+    Win == Win = True
+    Loss == Loss = True
+    Tie == Tie = True
+    _ == _ = False</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Warning: By instance we don&#8217;t mean an object we mean
+         "an implementation" of the type class</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_using_the_type_class">
+<h2>Using the type class</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(Win == Win) -- True
+(Loss == Win) -- False</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_type_classes_in_scala">
+<h2>Type Classes in Scala</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>trait Eq[a] {
+  def eq(a1: a)(a2: a): Boolean
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>sealed abstract class GameResult
+final case object Win extends GameResult
+final case object Loss extends GameResult
+final case object Tie extends GameResult</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>implicit class GameResult extends Eq[GameResult] {
+   def eq(a1:GameResult, a2:GameResult) = (a1, a2) match {
+       case (Win, Win) =&gt; true
+       case (Loss, Loss) =&gt; true
+       case (Tie, Tie) =&gt; true
+       case _ =&gt; false
+   }
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>def newIsEquals(x:GameResult, y:GameResult)(implicit val eq:Eq[GameResult]) = {
+   eq(x)(y)
+}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_type_classes_in_clojure">
+<h2>Type classes in Clojure</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(defprotocol Eq
+   (equal-to [x y])
+   (not-equal-to [x y])
+)
+
+(extend-type clojure.lang.Keyword
+   Eq
+   (equal-to [x y] (= x y))
+   (not-equal-to [x y] (not= x y))
+)
+
+(println (equal-to :Win :Win))
+(println (equal-to :Loss :Loss))
+(println (equal-to :Tie :Tie))
+(println (equal-to :Win :Loss))</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_ad_hoc_polymorphism">
+<h2>Ad Hoc Polymorphism</h2>
+<div class="ulist">
+<ul>
+<li>Something badass you can tell your boss to get a raise</li>
+<li>It actually has to do with the ability of types</li>
+<li>Also known as "overloading"</li>
+<li>Definition that we can use the <code>Eq</code> type class for various types!</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_more_about_ad_hoc_polymorphism">
+<h2>More about Ad Hoc Polymorphism</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(1 == 4)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This works because there is an <code>instance</code> of <code>Eq Int</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>("Hello" == "Hello")</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This works because there is an <code>instance</code> of <code>Eq String</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(Win == Win)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This works because we said so and is an <code>instance</code> of <code>Eq GateResult</code></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_extending_type_classes">
+<h2>Extending Type Classes</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>class  (Eq a) =&gt; Ord a  where
+  (&lt;), (&lt;=), (&gt;=), (&gt;)  :: a -&gt; a -&gt; Bool
+  max, min              :: a -&gt; a -&gt; a</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_kinds_vs_types">
+<h2>Kinds Vs. Types</h2>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_types">
+<h2>Types</h2>
+<div class="ulist">
+<ul>
+<li>Type are what are classes in Java</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t 4
+4 :: Num a =&gt; a</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t "What is love? Baby don't hurt me"
+"What is love? Baby don't hurt me" :: [Char]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_kinds">
+<h2>Kinds</h2>
+<div class="paragraph"><p>Kinds are a description of the type</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Int
+Int :: *</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>"In order to create a type Int, how many extra things do we need?"</p></div>
+</section>
+<section class="slide" id="_introduction_to_the_code_maybe_code_type">
+<h2>Introduction to the <code>Maybe</code> Type</h2>
+<div class="paragraph"><p>Algebraic Data Type of <code>Maybe</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>data Maybe a = Nothing | Just a</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Just 3
+Just 3
+
+Prelude&gt; Just "Blueberry Pancakes"
+Just "Blueberry Pancakes"
+
+Prelude&gt; Nothing
+Nothing
+
+Prelude&gt; Just 10 :: Maybe Double
+Just 10.0</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_type_of_code_maybe_code">
+<h2>The Type of <code>Maybe</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t Just "Blueberry Pancakes"
+Just "Blueberry Pancakes" :: Maybe [Char]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t Just 90
+Just 90 :: Num a =&gt; Maybe a</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_kind_of_code_maybe_code">
+<h2>The Kind of <code>Maybe</code></h2>
+<div class="paragraph"><p>First off, remember this signature&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>data Maybe a = Nothing | Just a</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Maybe
+Maybe :: * -&gt; *</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Maybe Int
+Maybe Int :: *</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_code_either_code_type">
+<h2>The <code>Either</code> type</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>data Either a b = Left a | Right b</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Left 10
+Left 10
+Prelude&gt; :t Left 10
+Left 10 :: Num a =&gt; Either a b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>What do you think the unsatisfied kind is of <code>Either</code>?</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_kind_of_code_either_code">
+<h2>The Kind of <code>Either</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Either
+Either :: * -&gt; * -&gt; *</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Either Int
+Either Int :: * -&gt; *</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>:k Either Int [Char]
+Either Int [Char] :: *</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_list_type">
+<h2>The List Type</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t []
+[] :: [a]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :t [1,2,3,4]
+[1,2,3,4] :: Num t =&gt; [t]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>What is the kind of <code>[]</code>?</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_kind_of_code_code">
+<h2>Kind of <code>[]</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k []
+[] :: * -&gt; *</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k [Int]
+[Int] :: *</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__code_functor_code_type_class">
+<h2><code>Functor</code> Type Class</h2>
+<div class="paragraph"><p>This is where things get "kind" of hard</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Functor f where
+    fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><code>f</code> has a requirement, what kind does <code>f</code> have to be?</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_discovering_kinds_in_code_functor_code">
+<h2>Discovering Kinds in <code>Functor</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Functor f where
+    fmap :: (a -&gt; b) -&gt; <span class="mono-bold-green">f a</span> -&gt; <span class="mono-bold-green">f b</span></code></pre>
+</div>
+</div>
+<div class="paragraph"><p><code>f a</code> means whatever <code>f</code> is it requires an <code>a</code>
+<code>f b</code> also means whatever <code>f</code> is, it requires a <code>b</code></p></div>
+<div class="paragraph"><p>Because <code>f</code> requires one thing <code>*</code>, therefore we know that f is * -> *</p></div>
+<div class="paragraph"><p>Quick! It&#8217;s up to us now to find a kind of * -> *!</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_visual_functor">
+<h2>Visual Functor</h2>
+<div class="paragraph"><p><span class="image"><img alt="functorboxes" src="./images/functorboxes.png"></span></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_plugging_in_a_code_kind_code_of_code_maybe_code">
+<h2>Plugging in a <code>kind</code> of <code>Maybe</code></h2>
+<div class="paragraph"><p>Reminder #1:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>data Maybe a = Nothing | Just a</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Reminder #2:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Functor f where
+    fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Reminder #3:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Maybe
+Maybe :: * -&gt; *</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Well that&#8217;s what we need a kind of <code>* &#8594; *</code>!</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Functor Maybe where
+   fmap f (Just x) = Just (f x)
+   fmap f Nothing = Nothing</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_using_a_code_maybe_code_code_functor_code">
+<h2>Using a <code>Maybe</code> <code>Functor</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (\x -&gt; x * 14) (Just 19)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Results in:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Just 266</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>I could&#8217;ve written it like this&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (14*) (Just 19)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Now, trying with <code>Nothing</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (22+) Nothing</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Results in:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Nothing</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_it_s_about_find_the_right_types_and_the_right_kinds" style="background-image: url(images/puzzles.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_list_functor">
+<h2>List Functor</h2>
+<div class="paragraph"><p>Reminder of the kind of <code>[]</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k []
+[] :: * -&gt; *</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>It works! Therefore to make it a <code>Functor</code>:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Functor [] where
+  fmap f xs = map f xs</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>or</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Functor[] where
+  fmap = map</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Therefore <code>fmap</code> and <code>map</code> should work the same</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; fmap (12*) [1,2,3,4,5]
+[12,24,36,48,60]
+Prelude&gt; map (12*) [1,2,3,4,5]
+[12,24,36,48,60]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_either_functor">
+<h2>Either Functor</h2>
+<div class="paragraph"><p>Reminder of the Algebraic Data Type</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>data Either a b = Left a | Right b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>The problem with <code>Either</code> is that it&#8217;s kind is..</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; :k Either
+Either :: * -&gt; * -&gt; *</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>and it is not * -> * like we need it to be,
+therefore we need satisfy one half of the kind pattern.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Functor (Either a) where
+    fmap f (Right x) = Right (f x)
+    fmap f (Left x) = Left x</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Reminder:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Functor f where
+    fmap :: (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_using_the_code_either_code_code_functor_code">
+<h2>Using the <code>Either</code> <code>Functor</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; fmap ("Nice " ++) (Right "Code")
+Right "Nice Code"
+Prelude&gt; fmap (20*) (Left 30)
+Left 30</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_intermission" style="background-image: url(images/intermission.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_part_2_of_this_presentation">
+<h2>Part 2 of this presentation</h2>
+<div class="ulist">
+<ul>
+<li>Some More Functors</li>
+<li>Applicatives</li>
+<li>Monoids</li>
+<li>Monads</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_do_functors_look_like_in_java">
+<h2>What do Functors look like in Java?</h2>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_imagine_2" style="background-image: url(images/Imagine.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__if_we_had_the_ability_to_do_this_in_java">
+<h2>&#8230;&#8203;if we had the ability to do this in Java</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>public F&lt;B&gt; &lt;A, B, F extends Functor&gt; fmap(x:A, f:F&lt;A&gt;) {
+   ....
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>But we can&#8217;t. We cannot do F&lt;B&gt; because F is unknown, and java needs that.
+F is what is known as a <strong>Higher Kinded Type</strong></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_scala_has_higher_kinded_types">
+<h2>Scala has Higher Kinded Types!</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>trait Functor[F[_]]  { self =&gt;
+  def map[A, B](fa: F[A])(f: A =&gt; B): F[B]
+}
+
+implicit object ListFunctor extends Functor[List] {
+  override def map[A, B](fa: List[A])(f: (A) =&gt; B): List[B] = fa.map(f)
+}
+
+implicit object OptionFunctor extends Functor[Option] {
+  override def map[A, B](fa: Option[A])(f: (A) =&gt; B): List[B] = fa match {
+     case Some(x) =&gt; Some(f(x))
+     case None =&gt; None
+  }
+}
+
+/* Power play! I only need to declare once! Remember ad-hoc polymorphism! */
+def fmap[A, B, C[_]](f:A =&gt; B)(coll:C[A])(implicit functor:Functor[C]) =
+       functor.map(coll)(f)
+
+
+fmap(x =&gt; x + 2)(List(1,2,3,4)) //List(3,4,5,6)
+fmap(x =&gt; x + 2)(Some(100))     //Some(102)
+fmap(x =&gt; x + 19)(None)         //None</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide canvas-image" id="_winner_winner_chicken_dinner" style="background-image: url(images/WinnerWinnerChickenDinner.jpg)">
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_applicatives">
+<h2>Applicatives</h2>
+<div class="ulist">
+<ul>
+<li>Beefed up functor</li>
+<li>Functors take one param</li>
+<li>Consider:</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (+) (Just 10)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Turns into:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(Just ((+) 10))</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Which is the same as:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(Just (10+))</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Where the type is:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>:t Maybe(Int -&gt; Int)</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_other_partial_maps">
+<h2>Other Partial Maps</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (+) [1,2,3,4,5]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Where the type is&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>:t [Integer -&gt; Integer]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>or</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap (\x y z -&gt; x + y + z) [1,2,3,4,5]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Where the type is&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>:t [Integer -&gt; Integer -&gt; Integer]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>What if we wanted to do&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>op Just(4*) Just(5)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>so we can get <code>Just(9)</code>?</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_applicative_functors_definition">
+<h2>Applicative Functors Definition</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>class (Functor f) =&gt; Applicative f where
+    pure :: a -&gt; f a
+    (&lt;*&gt;) :: f (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: Applicatives are Functors</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_it_s_code_pure_code_baby">
+<h2>It&#8217;s <code>pure</code> baby</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="boxwithballoutside" src="./images/boxwithballoutside.png">
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_it_s_code_pure_code_baby_2">
+<h2>It&#8217;s <code>pure</code> baby</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="boxwithballinside" src="./images/boxwithballinside.png">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure 5 :: Maybe Int</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_more_pure">
+<h2>More pure:</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure 3 :: Either String Int</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Will return:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Right 3</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_contrasting_and_comparing_code_code_and_code_fmap_code">
+<h2>Contrasting and Comparing <code>&lt;*&gt;</code> and <code>fmap</code></h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap :: (a -&gt; b) -&gt; f a -&gt; f a</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>&lt;*&gt; :: f (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_envisioning_what_code_code_looks_like">
+<h2>Envisioning what <code>&lt;*&gt;</code> looks like</h2>
+<div class="paragraph"><p><span class="image"><img alt="applicativeboxes" src="./images/applicativeboxes.png"></span></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_envisioning_what_code_code_looks_like_2">
+<h2>Envisioning what <code>&lt;*&gt;</code> looks like</h2>
+<div class="paragraph"><p><span class="image"><img alt="applicativeboxes" src="./images/applicativeboxes.png"></span></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>&lt;*&gt; Just(*3) Just 4</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_envisioning_what_code_code_looks_like_3">
+<h2>Envisioning what <code>&lt;*&gt;</code> looks like</h2>
+<div class="paragraph"><p><span class="image"><img alt="applicativeboxes" src="./images/applicativeboxes.png"></span></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Just(*3) &lt;*&gt; Just 4</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_building_another_applicative">
+<h2>Building another applicative</h2>
+<div class="paragraph"><p><span class="image"><img alt="applicativeboxes2" src="./images/applicativeboxes2.png"></span></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure (+) &lt;*&gt; Just 3 &lt;*&gt; Just 5</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_building_another_applicative_2">
+<h2>Building another applicative</h2>
+<div class="paragraph"><p><span class="image"><img alt="applicativeboxes2" src="./images/applicativeboxes2.png"></span></p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure (*) &lt;*&gt; Nothing &lt;*&gt; Just 9</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_list_applicatives">
+<h2>List Applicatives</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Applicative [] where
+    pure x = [x]
+    fs &lt;*&gt; xs = [f x | f &lt;- fs, x &lt;- xs]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_pure_list_applicatives">
+<h2>Pure List Applicatives</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure 3 :: [Int]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Converts to:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[3]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>pure "Dance" : [String]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Converts to:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>["Dance"]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: <code>String</code> is an alias for <code>[Char]</code></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_so_how_do_we_read_list_applicative_s_code_code">
+<h2>So how do we read List Applicative&#8217;s <code>&lt;*&gt;</code>?</h2>
+<div class="paragraph"><p>The signature is</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>fs &lt;*&gt; xs = [f x | f &lt;- fs, x &lt;- xs]`</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This is called a for comprehesion</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[(1*), (2+)] &lt;*&gt; [3, 9]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[3, 9, 5, 11]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_a_slightly_complicated_applicative_chain">
+<h2>A slightly complicated Applicative chain</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>[(+), (*)] &lt;*&gt; [4,5] &lt;*&gt; [1,9]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Taking it in parts</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[(+4), (+5), (*4), (*5)] &lt;*&gt; [1,9]
+[5, 13, 6, 14, 4, 36, 5, 45]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_does_applicative_look_like_in_scala">
+<h2>What does Applicative look like in Scala?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>trait Applicative[F[_]] {
+   def pure[A](a:A):F[A]
+   def apply[A, B](fa: F[A])(f:F[A=&gt;B]):F[B]
+}
+
+implicit object ListApplicative extends Applicative[List] {
+  override def pure[A] (a:A) = List(a)
+  override def apply[A, B](xs: List[A])(fs: List[A =&gt; B]): List[B] =
+    for (f &lt;- fs;
+         x &lt;- xs) yield f(x)
+}
+
+implicit object OptionApplicative extends Applicative[Option] {
+  override def pure[A] (a:A) = Some(a)
+  override def apply[A, B](fa: Option[A])(f: Option[A =&gt; B]): Option[B] = (f, fa) match {
+     case (None, _) =&gt; None
+     case (_, None) =&gt; None
+     case (Some(f), Some(i)) =&gt; Some(f(i))
+  }
+}
+
+def applicate [A, B, C[_]](f:C[A =&gt; B])(coll: C[A])(implicit applicative:Applicative[C]) = {
+       applicative.apply(coll)(f)
+}
+
+println(applicate(Some((x:Int) =&gt; x * 4):Option[Int =&gt; Int])(Some(5):Option[Int]))
+println(applicate(List((x =&gt; x + 1), (x =&gt; x + 4)):List[Int =&gt; Int])(List(3, 9)))</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><code>Some(20)</code></p></div>
+<div class="paragraph"><p><code>List(4,10,7,13)</code></p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_monoids">
+<h2>Monoids</h2>
+<div class="ulist">
+<ul>
+<li>Monoids combines things that are associative, regardless of order or parenthetical categorization:</li>
+<li>Examples</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>`3 * 4`</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>`2 + 10`</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>((r + s) + t) or (r + (s + t))</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>A higher abstract to append one item to another, but in a type class way</li>
+<li>Functional Programmers are obsessive about using one method to work with many types</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_monoid_definition">
+<h2>Monoid Definition</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Monoid m where
+    mempty :: m
+    mappend :: m -&gt; m -&gt; m
+    mconcat :: [m] -&gt; m
+    mconcat = foldr mappend mempty</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_monoid_rules">
+<h2>Monoid Rules</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>mempty `mappend` x = x
+x `mappend` mempty = x
+(x `mappend` y) `mappend` z = x `mappend` (y `mappend` z)</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_list_monoids">
+<h2>List Monoids</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Monoid [a] where
+    mempty = []
+    mappend = (++)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; [1,2,3] `mappend` [4,5,6]
+[1,2,3,4,5,6]
+Prelude&gt; "What's" `mappend` "cool"
+What'scool
+Prelude&gt; mempty::[String]
+[]
+Prelude&gt; mempty::[Int]
+[]
+Prelude&gt; mempty::String
+""
+Prelude&gt; mconcat [[1,2], [3,5,6,7,10], [12, 19]]
+[1,2,3,5,6,7,10,12,19]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__code_foldr_code">
+<h2><code>foldr</code>?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; let g = foldr (+) 0
+Prelude&gt; g [1,2,3,4,5]
+15</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Repeating from the previous slide</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; mconcat [[1,2], [3,5,6,7,10], [12, 19]]
+[1,2,3,5,6,7,10,12,19]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_does_a_monoid_look_like_in_scala">
+<h2>What does a monoid look like in Scala?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>trait Monoid[A] {
+   def op(a1: A, a2: A): A
+   def zero: A
+}
+
+val stringMonoid= new Monoid[String] {
+   def op(a1: String, a2: String) = a1 + a2
+   val zero = ""
+}
+
+def listMonoid[A] = new Monoid[List[A]] {
+ def op(a1: List[A], a2: List[A]) = a1 ++ a2
+ val zero = Nil
+}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_so_far_we_have_discovered">
+<h2>So far we have discovered..</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap :: (Functor f) =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(&lt;*&gt;) :: (Applicative f) =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__and_now_monads">
+<h2>..and now Monads!</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>fmap :: (Functor f) =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(&lt;*&gt;) :: (Applicative f) =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code><span class="mono-bold-green">(&gt;&gt;=) :: (Monad m) =&gt; m a -&gt; (a -&gt; m b) -&gt; m b</span></code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_monads_in_visual_form">
+<h2>Monads in Visual Form</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="monadboxes" src="./images/monadboxes.png">
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(&gt;&gt;=) :: (Monad m) =&gt; m a -&gt; (a -&gt; m b) -&gt; m b</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_complete_monad_typeclass">
+<h2>The complete Monad typeclass</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>class Monad m where
+    return :: a -&gt; m a
+
+    (&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b
+
+    (&gt;&gt;) :: m a -&gt; m b -&gt; m b
+    x &gt;&gt; y = x &gt;&gt;= \_ -&gt; y
+
+    fail :: String -&gt; m a
+    fail msg = error msg</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__code_return_code">
+<h2><code>return</code>?</h2>
+<div class="ulist">
+<ul>
+<li>Same is <code>pure</code> in Applicative, take an item and put into a context or container</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>return 4 :: Maybe Int</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Evaluates To&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Just 4</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>return 4 :: [Int]</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Evaluates To..</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[4]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_bind_method">
+<h2>Bind method</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>(&gt;&gt;=) :: m a -&gt; (a -&gt; m b) -&gt; m b</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>How we will invoke as such:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>ma &gt;&gt;= (a -&gt; m b)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Bind will take one monad, and a function that will return a monad of another type, and provide some result</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="__code_fail_code">
+<h2><code>fail</code></h2>
+<div class="ulist">
+<ul>
+<li>Monads provide an option for failure as a monad.</li>
+<li>Whereas <code>return</code> will provide a Monad of it&#8217;s simplest form</li>
+<li><code>fail</code> will return a monad representing failure</li>
+</ul>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_the_move_along_function">
+<h2>The "move-along" function</h2>
+<div class="ulist">
+<ul>
+<li><code>(&gt;&gt;)</code> will take two monads, and determine with one to pass on down.</li>
+<li>By default will accept a the two monads, and return the second one.</li>
+</ul>
+</div>
+<div class="paragraph"><p>The signature is:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>(&gt;&gt;) :: m a -&gt; m b -&gt; m b
+x &gt;&gt; y = x &gt;&gt;= \_ -&gt; y</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_maybe_monad">
+<h2>Maybe Monad</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Monad Maybe where
+    return x = Just x
+    Nothing &gt;&gt;= f = Nothing
+    Just x &gt;&gt;= f  = f x
+    fail _ = Nothing</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Just 4 &gt;&gt;= \x -&gt; return (3*x)
+Just(12)
+Prelude&gt; Nothing &gt;&gt;= \x -&gt; return(x + 100)
+Nothing
+Prelude&gt; fail "Help" :: Maybe Int
+Nothing</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_what_is_the_point">
+<h2>What is the point?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Just 10 &gt;&gt;= (\x -&gt; Just (show x ++ "!"))
+Just "10!"</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Just 10 &gt;&gt;= (\x -&gt; Just "!" &gt;&gt;= (\y -&gt; Just (show x ++ y)))
+Just "10!"</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Both of the above, are longer than&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; let x = 3; y = "!" in show x ++ y</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_monads_have_built_in_short_circuit_error_handling">
+<h2>Monads have built in short circuit error handling</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; Nothing &gt;&gt;= (\x -&gt; Just "!" &gt;&gt;= (\y -&gt; Just (show x ++ y)))
+Nothing
+Prelude&gt; Just 3 &gt;&gt;= (\x -&gt; Nothing &gt;&gt;= (\y -&gt; Just (show x ++ y)))
+Nothing
+Prelude&gt; Just 3 &gt;&gt;= (\x -&gt; Just "!" &gt;&gt;= (\y -&gt; Nothing))
+Nothing</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_because_haskell_and_other_programming_languages_rely_on_monads">
+<h2>Because Haskell and other programming languages rely on monads&#8230;&#8203;</h2>
+<div class="paragraph"><p>We are able to convert this&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>monadStack :: Maybe String
+monadStack = Just 3 &gt;&gt;= (\x -&gt;
+             Just "!" &gt;&gt;= (\y -&gt;
+             Just (show x ++ y)))</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>to this&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>monadStackWithDo :: Maybe String
+monadStackWithDo = do
+                     x &lt;- Just 3
+                     y &lt;- Just "!"
+                     Just (show x ++ y)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>This is called "Monad Comprehension"</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_we_can_even_do_pattern_matching_as_a_monad_comprehension">
+<h2>We can even do pattern matching as a Monad Comprehension</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>firstChar :: Maybe Char
+firstChar = do
+              (x:xs) &lt;- Just "hello"
+              return x</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_list_monads">
+<h2>List Monads</h2>
+<div class="paragraph"><p>Here is the definition of a list monad..</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>instance Monad [] where
+    return x = [x]
+    xs &gt;&gt;= f = concat (map f xs)
+    fail _ = []</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>And here is how we use it&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[3,4,5] &gt;&gt;= \x -&gt; [x,-x]
+[3,-3,4,-4,5,-5]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_failure_in_list_monads">
+<h2>Failure in List Monads</h2>
+<div class="paragraph"><p>Should be very similar to the Maybe Monad</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; [] &gt;&gt;= \x -&gt; [1,2,3]
+[]
+Prelude&gt; [1,2,3] &gt;&gt;= \x -&gt; []
+[]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_as_a_list_monad_does_this_operation_look_familiar">
+<h2>As a list monad, does this operation look familiar?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>Prelude&gt; [10,11,12] &gt;&gt;= (\x -&gt; [x + 1, x + 2, x + 3])
+[11,12,13,12,13,14,13,14,15]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_flat_map">
+<h2>Flat Map!</h2>
+<div class="paragraph"><p>Here is Flat Map in Java 8!</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Arrays.asList(10, 11, 12).stream().flatMap(x -&gt; Arrays.asList(x + 1, x + 2, x + 3).stream()).collect(Collectors.toList());</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[11, 12, 13, 12, 13, 14, 13, 14, 15]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_flat_map_in_scala">
+<h2>Flat Map in Scala!</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>List(10, 11, 12).flatMap(x =&gt; List(x + 1, x + 2, x + 3))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>[11, 12, 13, 12, 13, 14, 13, 14, 15]</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_flat_map_in_scala_is_used_for_a_variety_of_things">
+<h2>Flat Map in Scala is used for a variety of things</h2>
+<div class="paragraph"><p>Like a Maybe Monad</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Some(4).flatMap(x =&gt; Some(3 + x))</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre><code>Some(7)</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_io_monad">
+<h2>IO Monad?</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>main = do
+         x &lt;- return("Hello ")
+         y &lt;- return("World")
+         putStrLn (x ++ y)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>is the same as</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><code>main = do
+          return("Hello ") &gt;&gt;= \x -&gt;
+             return("World") &gt;&gt;= \y -&gt;
+               putStrLn(x ++ y)</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: This is perhaps the single reason why Haskell is always so hard to get started!</p></div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_futures_monad_in_scala">
+<h2>Futures Monad in Scala</h2>
+<div class="listingblock">
+<div class="content">
+<pre><code>val future1 = Future {
+  Thread.sleep(3000)
+  180 / 2
+}
+
+val future2 = Future {
+  Thread.sleep(3000)
+  90 / 3
+}
+
+val result = future1.flatMap {
+  x =&gt;
+    future2.map {
+      y =&gt;
+        x + y
+    }
+}</code></pre>
+</div>
+</div>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_rube_goldbergs_and_xmonad">
+<h2>Rube Goldbergs and XMonad</h2>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_thank_you">
+<h2>Thank you!</h2>
+<div style="page-break-after: always"></div>
+</section>
+<section class="slide" id="_sources">
+<h2>Sources:</h2>
+<div class="ulist">
+<ul>
+<li>Learn you a Haskell for A Greater Good - <a class="bare" href="http://learnyouahaskell.com/">http://learnyouahaskell.com/</a></li>
+<li>Functional Programming in Scala - <a class="bare" href="http://www.manning.com/bjarnason/">http://www.manning.com/bjarnason/</a></li>
+<li>Math World Wolfram Alpha - <a class="bare" href="http://mathworld.wolfram.com">http://mathworld.wolfram.com</a></li>
+<li>Wikipedia - <a class="bare" href="http://www.wikipedia.org">http://www.wikipedia.org</a></li>
+</ul>
+</div>
+</section>
+<div aria-role="navigation">
+<a class="deck-prev-link" href="#" title="Previous">&#8592;</a>
+<a class="deck-next-link" href="#" title="Next">&#8594;</a>
+</div>
+</div>
+<script src="deck.js/jquery.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+<script src="deck.js/extensions/scale/deck.scale.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="deck.js/extensions/split/deck.split.js"></script>
+<script>
+  (function($, deck, undefined) {
+    $.deck.defaults.keys['previous'] = [8, 33, 37, 39];
+    $.deck.defaults.keys['next'] = [13, 32, 34, 39];
+  
+    $.extend(true, $[deck].defaults, {
+        countNested: false
+    });
+  
+    $.deck('.slide');
+  })(jQuery, 'deck');
+</script>
+<style>
+  .slide.canvas-image {
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -moz-box-align: start;
+  -webkit-box-align: start;
+  -ms-box-align: start;
+  box-align: start;
+  -moz-box-pack: start;
+  -webkit-box-pack: start;
+  -ms-box-pack: start;
+  box-pack: start;}
+  
+  .bottom-left {
+    left: 1%;
+    bottom: 20%; }
+  
+  .top-left {
+    left: 1%;
+    top: 20%; }
+  
+  .bottom-right {
+    right: 1%;
+    bottom: 20%; }
+  
+  .top-right {
+    right: 1%;
+    top: 20%; }
+  
+  .center-up {
+    right: 50%;
+    top: 1%;
+  }
+  
+  .center-down {
+    right: 50%;
+    bottom: 1%;
+  }
+  .canvas-image .canvas-caption p {
+    text-align: center;
+    padding-top: 0;
+    padding: 0;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+    display: inline;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-size: 58px;
+    -webkit-box-shadow: 2px 2px 2px #000;
+    -moz-box-shadow: 2px 2px 2px #000;
+    box-shadow: 2px 2px 2px #000;
+    padding: 1rem;
+    color: white; }
+  kbd.keyseq { color: #555555; }
+  kbd:not(.keyseq) {
+    display: inline-block;
+    color: #222222;
+    font-size: 0.7em;
+    line-height: 1.4;
+    background-color: #F7F7F7;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    margin: -0.15em 0.15em 0 0.15em;
+    padding: 0.2em 0.6em;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  kbd kbd:first-child { margin-left: 0; }
+  kbd kbd:last-child { margin-right: 0; }
+</style>
+</body>
+</html>
