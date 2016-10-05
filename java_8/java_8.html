@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=" http-equiv="Content-Type">
+<meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+<meta content="Asciidoctor 1.5.4" name="generator">
+<meta content="Daniel Hinojosa" name="author">
+<title>Java 8</title>
+<link href="../deck.js/core/deck.core.css" rel="stylesheet">
+<link href="../deck.js/extensions/scale/deck.scale.css" media="screen" rel="stylesheet">
+<link href="../deck.js/extensions/navigation/deck.navigation.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/style/pridi.css" media="screen" rel="stylesheet">
+<link href="../deck.js/themes/transition/fade.css" media="screen" rel="stylesheet">
+<link href="../deck.js/core/print.css" media="print" rel="stylesheet">
+<script src="../deck.js/modernizr.custom.js"></script>
+</head>
+<body class="article">
+<div class="deck-container">
+<section class="slide" id="title-slide">
+<h1>Java 8</h1>
+<span id="author">Daniel Hinojosa</span>
+<br>
+</section>
+<section class="slide" id="_todo">
+<h2>Todo</h2>
+<div class="ulist">
+<ul>
+<li>Composing Functions</li>
+<li>Laziness</li>
+<li>Parallelism</li>
+<li>Collect</li>
+<li>Multiline functions</li>
+<li>Closures</li>
+<li>Object::toString instead</li>
+<li>Reusing Streams</li>
+<li>No mutable state, Processing</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_java_8_topics">
+<h2>Java 8 Topics</h2>
+<div class="paragraph"><p>What you will learn in this course:</p></div>
+<div class="ulist">
+<ul>
+<li>Lambdas</li>
+<li>Method References</li>
+<li><code>Optional</code></li>
+<li><code>Stream</code></li>
+<li>Default Methods</li>
+<li><code>CompletableFuture</code></li>
+<li>Date Time API</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_what_s_new_in_java_8">
+<h2>What&#8217;s new in Java 8?</h2>
+
+</section>
+<section class="slide" id="_what_s_new_in_java_8_2">
+<h2>What&#8217;s new in Java 8?</h2>
+<div class="paragraph"><p>For the Java Programming Language:</p></div>
+<div class="ulist">
+<ul>
+<li>Lambda Expressions, a new language feature, has been introduced in this release. They enable you to treat functionality as a method argument, or code as data. Lambda expressions let you express instances of single-method interfaces (referred to as functional interfaces) more compactly.</li>
+<li>Method references provide easy-to-read lambda expressions for methods that already have a name.</li>
+<li>Default methods enable new functionality to be added to the interfaces of libraries and ensure binary compatibility with code written for older versions of those interfaces.</li>
+<li>Repeating Annotations provide the ability to apply the same annotation type more than once to the same declaration or type use.</li>
+<li>Type Annotations provide the ability to apply an annotation anywhere a type is used, not just on a declaration. Used with a pluggable type system, this feature enables improved type checking of your code.</li>
+<li>Improved type inference.</li>
+<li>Method parameter reflection.</li>
+</ul>
+</div>
+<div class="paragraph"><p>Source: <a class="bare" href="http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html">http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html</a></p></div>
+</section>
+<section class="slide" id="_lab_pre_class_check">
+<h2>Lab: Pre-Class Check</h2>
+<div class="paragraph"><p>Before we begin it is assumed that all of you have the following tools installed:</p></div>
+<div class="ulist">
+<ul>
+<li>JDK 1.8.x</li>
+<li>Maven 3.3.x</li>
+</ul>
+</div>
+<div class="paragraph"><p>To verify that all your tools work as expected</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="sh language-sh">% <span class="mono-bold-blue">javac -version</span>
+javac 1.8.0_65
+
+% <span class="mono-bold-blue">java -version</span>
+java version "1.8.0_65"
+Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
+Java HotSpot(TM) 64-Bit Server VM (build 25.65-b01, mixed mode)
+
+% <span class="mono-bold-blue">mvn -v</span>
+Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T09:41:47-07:00)
+Maven home: /usr/lib/mvn/apache-maven-3.3.9
+Java version: 1.8.0_65, vendor: Oracle Corporation
+Java home: /usr/lib/jvm/jdk1.8.0_65/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "4.4.0-34-generic", arch: "amd64", family: "unix"</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The JDK 8 Version doesn&#8217;t have to be exact as long as it is Java 8.
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class="slide" id="_lab_download_the_three_day_project">
+<h2>Lab: Download the three day project</h2>
+<div class="paragraph"><p>From <a class="bare" href="https://github.com/dhinojosa/advanced_java_spike">https://github.com/dhinojosa/advanced_java_spike</a> download the project .zip file and extract it into your favorite location.</p></div>
+<div class="imageblock">
+<div class="content">
+<img alt="git advanced java spike" src="./images/git_advanced_java_spike.png">
+</div>
+</div>
+</section>
+<section class="slide" id="_optional_lab_open_project_in_intellij">
+<h2>Optional Lab: Open Project in IntelliJ</h2>
+<div class="paragraph"><p>Once downloaded and extracted to your favorite location,
+In IntelliJ Open The Project, IntelliJ will recognize it as a Maven project and you are good to go.</p></div>
+<div class="imageblock">
+<div class="content">
+<img alt="intellij open" src="./images/intellij_open.png">
+</div>
+</div>
+</section>
+<section class="slide" id="_optional_lab_open_project_in_eclipse">
+<h2>Optional Lab: Open Project in Eclipse</h2>
+<div class="paragraph"><p>Once downloaded and extracted:</p></div>
+<div class="paragraph"><p><strong>Step 1:</strong> Select <em>File</em> &gt; <em>Import Project</em> in the menu.</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> In the following dialog box:</p></div>
+<div class="imageblock" style="float: right">
+<div class="content">
+<img alt="eclipse import" src="./images/eclipse_import.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>Open the <em>Maven</em> category</li>
+<li>Select <em>Import Existing Maven Projects</em></li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_optional_lab_open_project_in_eclipse_continued">
+<h2>Optional Lab: Open Project in Eclipse (Continued)</h2>
+<div class="paragraph"><p><strong>Step 3:</strong></p></div>
+<div class="imageblock" style="float: right">
+<div class="content">
+<img alt="eclipse import maven proj" src="./images/eclipse_import_maven_proj.png">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>Click the <em>Browse:</em> button next to <em>Root Directory</em></li>
+<li>Select the location of your <strong><em>java_advanced_spike</em></strong> directory.</li>
+</ul>
+</div>
+<div class="paragraph"><p><strong>Step 4:</strong> Click <em>Finish</em></p></div>
+</section>
+<section class="slide" id="_lambdas">
+<h2>Lambdas</h2>
+
+</section>
+<section class="slide" id="_about_java_8_lambdas">
+<h2>About Java 8 Lambdas</h2>
+<div class="paragraph"><p>Functional Interface Definition</p></div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>A functional interface is any interface that contains only one abstract method.
+(A functional interface may contain one or more default methods or static
+methods.) Because a functional
+interface contains only one abstract method, you can omit the name
+of that method when you implement it.</p></div>
+</blockquote>
+</div>
+<div class="paragraph"><p>(<code>equals</code> is an explicit declaration of a concrete method
+ inherited from <code>Object</code> that, without this declaration,
+ would otherwise be implicitly declared.)</p></div>
+</section>
+<section class="slide" id="_lab_create_code_mypredicate_code">
+<h2>Lab: Create <code>MyPredicate</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Ensure you have a <code>src/main/java</code> directory in the <code>java_8</code> module</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Ensure that the folders are seen as a build path (Eclipse only)</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Create a package called <code>com.xyzcorp</code> in <code>src/main/java</code></p></div>
+<div class="paragraph"><p><strong>Step 4:</strong> Create an interface in <code>com.xyzcorp</code> called <code>MyPredicate</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+public interface MyPredicate&lt;T&gt; {
+       public boolean test(T item);
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_about_code_mypredicate_code">
+<h2>About <code>MyPredicate</code></h2>
+<div class="ulist">
+<ul>
+<li>It&#8217;s an interface</li>
+<li>One <code>abstract</code> method: <code>test</code></li>
+<li><code>default</code> methods don&#8217;t count (More on that later)</li>
+<li><code>static</code> methods don&#8217;t count</li>
+<li>Any methods inherited from <code>Object</code> don&#8217;t count either.</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+public interface MyPredicate&lt;T&gt; {
+       <span class="mono-bold-green">public boolean test(T item);</span>
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Conclusion: We can omit the name when we implement it.</p></div>
+</section>
+<section class="slide" id="_functional_code_filter_code">
+<h2>Functional <code>filter</code></h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>Filter is a higher-order function that processes a data structure (usually a list) in some order to produce a new data structure containing exactly those elements of the original data structure for which a given predicate returns the boolean value true.</p></div>
+</blockquote>
+</div>
+<div class="paragraph"><p><a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)">Wikipedia: Map (higher-order function)</a></p></div>
+</section>
+<section class="slide" id="_functional_code_filter_code_by_example">
+<h2>Functional <code>filter</code> by example</h2>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+Given List of <code>list</code>:  <code>[1,2,3,4]</code>
+</li>
+<li>
+Given a function <code>f</code>:  <code>x &#8594; x % 2 == 0</code>
+</li>
+<li>
+When calling <code>filter</code> on a <code>list</code> with <code>f</code>: <code>[1,2,3,4].filter(f)</code>
+</li>
+<li>
+Then a copy of the <code>list</code> should return: <code>[2,4]</code>
+</li>
+</ol>
+</div>
+</section>
+<section class="slide" id="_lab_using_code_mypredicate_code">
+<h2>Lab: Using <code>MyPredicate</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create a File in the <code>com.xyzcorp</code> package called <strong><em>Functions.java</em></strong></p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Create an method called <code>myFilter</code> as seen below.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Functions {
+
+    public static &lt;T&gt; List&lt;T&gt; myFilter (List&lt;T&gt; list, MyPredicate&lt;T&gt; predicate) {
+        ArrayList&lt;T&gt; result = new ArrayList&lt;T&gt;();
+        for (T item : list) {
+            if (<span class="mono-bold-green">predicate.test(item)</span>) {
+                result.add(item);
+            }
+        }
+        return result;
+    }</code></pre>
+</div>
+</div>
+<div class="paragraph"><p>Note: This is the functional <code>filter</code></p></div>
+</section>
+<section class="slide" id="_lab_test_method_in_strong_em_lambdatest_java_em_strong">
+<h2>Lab: Test Method in <strong><em>LambdaTest.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Ensure you have a <code>src/test/java</code> directory in the java_8 module</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Ensure that the folders are seen as a build path (Eclipse only)</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Create a package called <code>com.xyzcorp</code> in <code>src/test/java</code></p></div>
+<div class="paragraph"><p><strong>Step 4:</strong> Create a class called <code>LambdaTest</code> in the <code>com.xyzcorp</code> package with the following test:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    @Test
+    public void testMyFilter() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        List&lt;Integer&gt; filtered = Functions.myFilter(numbers, <span class="mono-bold-green">new MyPredicate&lt;Integer&gt;() {
+            @Override
+            public boolean test(Integer item) {
+                return item % 2 == 0;
+            }
+        }</span>);
+        System.out.println(filtered);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Here we are defining what the predicate will do when sent into <code>filter</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 5:</strong> Run the test in your IDE to verify that it works as expected</p></div>
+</section>
+<section class="slide" id="_lab_code_mypredicate_code_is_lambdaized">
+<h2>Lab: <code>MyPredicate</code> is "Lambdaized"</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In the test you just wrote, convert <code>MyPredicate</code> into a lambda and use your IDE&#8217;s faculties to do so.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+   @Test
+    public void testMyFilter() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        List&lt;Integer&gt; filtered = Functions.myFilter(numbers, <span class="mono-bold-green">item -&gt; item % 2 == 0</span>);
+        System.out.println(filtered);
+    }
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_functional_code_map_code">
+<h2>Functional <code>map</code></h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>Applies a given function to each element of a list, returning a list of results in the same order. It is often called apply-to-all when considered in functional form.</p></div>
+</blockquote>
+</div>
+<div class="paragraph"><p><a href="https://en.wikipedia.org/wiki/Map_(higher-order_function)">Wikipedia: Map (higher-order function)</a></p></div>
+</section>
+<section class="slide" id="_functional_code_map_code_by_example">
+<h2>Functional <code>map</code> by example</h2>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+Given List of <code>list</code>:  <code>[1,2,3,4]</code>
+</li>
+<li>
+Given a function <code>f</code>:  <code>x &#8594; x + 1</code>
+</li>
+<li>
+When calling <code>map</code> on a <code>list</code> with <code>f</code>: <code>[1,2,3,4].map(f)</code>
+</li>
+<li>
+Then a copy of the <code>list</code> should return: <code>[2,3,4,5]</code>
+</li>
+</ol>
+</div>
+</section>
+<section class="slide" id="_lab_create_a_code_myfunction_code">
+<h2>Lab: Create a <code>MyFunction</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create an <code>interface</code> for <code>MyFunction</code></p></div>
+<div class="ulist">
+<ul>
+<li>In <code>src/main/java</code> and in the package <code>com.xyzcorp</code> create an <code>interface</code> called <code>MyFunction</code></li>
+<li>The interface should have a method called <code>apply</code></li>
+<li>The <code>MyFunction</code> interface should have two parameterized types <code>T1</code> and <code>R</code></li>
+<li>The <code>apply</code> method have one parameter <code>(T1 in)</code></li>
+<li>The <code>apply</code> method should have one return type: <code>R</code></li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_lab_create_a_code_mymap_code_in_strong_em_functions_java_em_strong">
+<h2>Lab: Create a <code>myMap</code> in <strong><em>Functions.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create <code>static</code> method called <code>myMap</code> in <strong><em>Functions.java</em></strong> with the following method header:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">public static &lt;T, R&gt; List&lt;R&gt; myMap(List&lt;T&gt; list, MyFunction&lt;T, R&gt; function) { }</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Fill in the method with what you believe a <code>map</code> should look like given the previous description.</p></div>
+</section>
+<section class="slide" id="_lab_use_code_mymap_code_in_strong_em_lambdatest_java_em_strong">
+<h2>Lab: Use <code>myMap</code> in <strong><em>LambdaTest.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Add the following test to your <strong><em>LambdaTest.java</em></strong> file:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMyMap() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        List&lt;Integer&gt; mapped = Functions.myMap(numbers, <span class="mono-bold-green">new MyFunction&lt;Integer, Integer&gt;() {
+            @Override
+            public Integer apply(Integer item) {
+                return item + 2;
+            }
+        }</span>);
+        System.out.println(mapped);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Convert the <code>new MyFunction</code> anonymous instantiation into a lambda using your IDE&#8217;s faculties</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_functional_code_foreach_code">
+<h2>Functional <code>forEach</code></h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>Performs an action on each element returning nothing or <code>void</code>, a sink</p></div>
+</blockquote>
+</div>
+</section>
+<section class="slide" id="_functional_code_foreach_code_by_example">
+<h2>Functional <code>forEach</code> by example</h2>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+Given List of <code>list</code>:  <code>[1,2,3,4]</code>
+</li>
+<li>
+Given a function <code>f</code>:  <code>x &#8594; System.out.println(x)</code>
+</li>
+<li>
+When calling <code>forEach</code> on a <code>list</code> with <code>f</code>: <code>[1,2,3,4].forEach(f)</code>
+</li>
+<li>
+Then <code>void</code> is returned. This is called a side effect.
+</li>
+</ol>
+</div>
+</section>
+<section class="slide" id="_lab_create_code_myconsumer_code">
+<h2>Lab: Create <code>MyConsumer</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Under <code>src/main/java</code>, and inside the <code>com.xyzcorp</code> package, create an <code>interface</code> called <code>MyConsumer</code> with the following content:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+public interface MyConsumer&lt;T&gt; {
+   public <span class="mono-bold-green">void</span> accept(T item);
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_lab_create_a_code_foreach_code_in_strong_em_listops_java_em_strong">
+<h2>Lab: Create a <code>forEach</code> in <strong><em>ListOps.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create <code>static</code> method called <code>myForEach</code> in <strong><em>Functions.java</em></strong> with the following method header:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">public static &lt;T, R&gt; void myForEach(List&lt;T&gt; list, MyConsumer&lt;T&gt; consumer) {}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Fill in the method with what you believe a <code>forEach</code> should look like</p></div>
+</section>
+<section class="slide" id="_lab_use_code_myforeach_code_in_strong_em_lambdatest_java_em_strong">
+<h2>Lab: Use <code>myForEach</code> in <strong><em>LambdaTest.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Add the following test to your <strong><em>LambdaTest.java</em></strong> file:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdaTest {
+
+    ...
+
+    @Test
+    public void testForEach() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        Functions.myForEach(numbers, <span class="mono-bold-green">new MyConsumer&lt;Integer&gt;() {
+            @Override
+            public void consume(Integer item) {
+                System.out.println(item);
+            }
+        }</span>);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 4:</strong> Convert the <code>new MyConsumer</code> anonymous instantiation into a lambda using your IDE&#8217;s faculties</p></div>
+<div class="paragraph"><p><strong>Step 5:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_a_detour_with_method_references">
+<h2>A Detour with Method References</h2>
+<div class="ulist">
+<ul>
+<li>When a lambda expression does nothing but call an existing method</li>
+<li>It&#8217;s often clearer to refer to the existing method by name.</li>
+<li>Works with lambda expressions for methods that already have a name.</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_types_of_method_references">
+<h2>Types of Method References</h2>
+<table class="tableblock frame-all grid-all" style="width:100%">
+<caption class="title">Table 1. Types of Method References</caption>
+<colgroup>
+<col style="width:50%">
+<col style="width:50%">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Kind</th>
+<th class="tableblock halign-left valign-top">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to a static method</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ContainingClass::staticMethodName</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to an instance method of a particular object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>containingObject::instanceMethodName</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to an instance method of an arbitrary object of a particular type</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ContainingType::methodName</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reference to a constructor</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ClassName::new</code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide" id="_lab_code_foreach_code_with_a_method_reference">
+<h2>Lab: <code>forEach</code> with a method reference</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Convert <code>x &#8594; System.out.println(x)</code> from the <code>testForEach</code> exercise in <strong><em>LambdaTest.java</em></strong> into a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testForEach() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        Functions.myForEach(numbers, <span class="mono-bold-green">System.out::println</span>);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Although confusing, in <code>System.out</code>, <code>out</code> is a <code>public final static</code> variable. Therefore, <code>println</code> is a non-static method of <code>java.io.PrintStream</code>. This is an instance method of an object.
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class="slide" id="_lab_method_reference_to_a_static_method">
+<h2>Lab: Method Reference to a static method</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Enter the following in the test method, <code>testMethodReferenceAStaticMethod</code> into <strong><em>LambdaTests.java</em></strong> and convert it using a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMethodReferenceAStaticMethod() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        System.out.println(Functions.myMap(numbers, <span class="mono-bold-green">a -&gt; Math.abs(a)</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use your IDE to guide you. It&#8217;s easier that way.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_method_reference_with_a_containing_type">
+<h2>Lab: Method Reference with a Containing Type</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Enter the following test method <code>testMethodReferenceAContainingType</code> in <strong><em>LambdasTest.java</em></strong> and convert it using a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMethodReferenceAContainingType() {
+        List&lt;String&gt; words = Arrays.asList("One", "Two", "Three", "Four");
+        System.out.println(Functions.myMap(words, <span class="mono-bold-green">s -&gt; s.length()</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use your IDE to guide you. It&#8217;s easier that way.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_method_reference_with_a_containing_type_trick_question">
+<h2>Lab: Method Reference with a Containing Type Trick Question</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Enter the following test method <code>testMethodReferenceAContainingTypeTrickQuestion</code> in <strong><em>LambdasTest.java</em></strong> and convert it using a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMethodReferenceAContainingTypeTrickQuestion() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        System.out.println(Functions.myMap(numbers, <span class="mono-bold-green">number -&gt; number.toString()</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use your IDE to guide you. It&#8217;s easier that way.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_create_a_code_tax_rate_code_class">
+<h2>Lab: Create a <code>Tax Rate</code> class:</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>src/main/java</code>, create a file called <strong><em>TaxRate.java</em></strong> in the <code>com.xyzcorp</code> package with the following content:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+public class TaxRate {
+    private final int year;
+    private final double taxRate;
+
+    public TaxRate(int year, double taxRate) {
+        this.year = year;
+        this.taxRate = taxRate;
+    }
+
+    public double apply(int subtotal) {
+        return (subtotal * taxRate) + subtotal;
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Ensure it compiles.</p></div>
+</section>
+<section class="slide" id="_lab_method_reference_with_an_instance">
+<h2>Lab: Method Reference with an Instance</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Enter the following test method <code>testMethodReferenceAnInstance</code> in <strong><em>LambdasTest.java</em></strong> and convert it using a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMethodReferenceAnInstance() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        <span class="mono-bold-green">TaxRate taxRate2016 = new TaxRate(2016, .085);</span>
+        System.out.println(Functions.myMap(numbers, <span class="mono-bold-green">subtotal -&gt; taxRate2016.apply(subtotal)</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use your IDE to guide you. It&#8217;s easier that way.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_method_reference_with_an_new_type">
+<h2>Lab: Method Reference with an New Type</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Enter the following test method <code>testMethodReferenceANewType</code> in <strong><em>LambdasTest.java</em></strong> and convert it using a method reference.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMethodReferenceANewType() {
+        List&lt;Integer&gt; numbers = Arrays.asList(2, 4, 5, 1, 9, 15, 19, 21, 33, 78, 93, 10);
+        System.out.println(Functions.myMap(numbers, <span class="mono-bold-green">value -&gt; new Double(value)</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Use your IDE to guide you. It&#8217;s easier that way.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_create_code_mysupplier_code">
+<h2>Lab: Create <code>MySupplier</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>src/main/java</code>, create an <code>interface</code> in the <code>com.xyzcorp</code> package called <code>MySupplier</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+public interface MySupplier&lt;T&gt; {
+   public <span class="mono-bold-green">T</span> get();
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Compare the difference to <code>MyConsumer</code>
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class="slide" id="_lab_create_a_code_mygenerate_code_in_strong_em_functions_java_em_strong">
+<h2>Lab: Create a <code>myGenerate</code> in <strong><em>Functions.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create <code>static</code> method called <code>myGenerate</code> with the following method header which takes a <code>MySupplier</code>, and a count, and returns a <code>List</code> with <code>count</code> number of items where each element is derived from invoking the <code>Supplier</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">public static &lt;T&gt; List&lt;T&gt; myGenerate(MySupplier&lt;T&gt; supplier, int count) {}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Fill in the method with what you believe a <code>myGenerate</code> should look like</p></div>
+</section>
+<section class="slide" id="_lab_use_code_mygenerate_code_in_strong_em_lambdatest_java_em_strong">
+<h2>Lab: Use <code>myGenerate</code> in <strong><em>LambdaTest.java</em></strong></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Add the following test, <code>testMyGenerate</code> to the <code>LambdaTests</code> class:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+<span class="mono-bold-green">import java.time.LocalDateTime;</span>
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testMyGenerate() {
+        List&lt;LocalDateTime&gt; localDateTimes = Functions.myGenerate(new <span class="mono-bold-green">MySupplier&lt;LocalDateTime&gt;() {
+            @Override
+            public LocalDateTime get() {
+                return LocalDateTime.now();
+            }
+        }</span>, 10);
+        System.out.println(localDateTimes);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>LocalDateTime.now()</code> is from the new Java Date/Time API from Java 8.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Convert the <code>new MySupplier</code> anonymous instantiation into a lambda using your IDE&#8217;s faculties</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Run to verify it all works!</p></div>
+</section>
+<section class="slide" id="_lab_viewing_consumer_supplier_predicate_function_in_the_official_javadoc">
+<h2>Lab: Viewing Consumer, Supplier, Predicate, Function, in the official Javadoc.</h2>
+<div class="paragraph"><p><a class="bare" href="https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html">https://docs.oracle.com/javase/8/docs/api/java/util/function/package-summary.html</a></p></div>
+</section>
+<section class="slide" id="_lab_multi_line_lambdas">
+<h2>Lab: Multi-line Lambdas</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <strong><em>LambdasTest.java</em></strong> create the following test, <code>testLambdasWithRunnable</code> where a <code>java.lang.Runnable</code> and <code>java.lang.Thread</code> is being created.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testLambdasWithRunnable() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String threadName =
+                        Thread.currentThread().getName();
+                System.out.format("%s: %s%n",
+                        threadName,
+                        "Hello from another thread");
+            }
+        });
+        t.start();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>Runnable</code> is an <code>interface</code> with one <code>abstract</code> method.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Convert the <code>Runnable</code> into a lambda.</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Notice how the lambda is created, this is a multi-line lambda.</p></div>
+</section>
+<section class="slide" id="_closure">
+<h2>Closure</h2>
+<div class="ulist">
+<ul>
+<li><em>Lexical scoping</em> caches values provided in one context for use later in another context.</li>
+<li>If lambda expression closes over the scope of its definition, it is a <em>closure</em>.</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">public static Integer foo
+        (Function&lt;Integer, Integer&gt; f) {
+    return f.apply(5);
+}
+
+public void otherMethod() {
+    Integer <span class="mono-bold-blue">x</span> = 3;
+    Function&lt;Integer, Integer&gt; add3 = z -&gt; <span class="mono-bold-blue">x</span> + z;
+    System.out.println(foo(add3));
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_lexical_scoping_restrictions">
+<h2>Lexical Scoping Restrictions</h2>
+<div class="ulist">
+<ul>
+<li><p>
+To avoid any race conditions:<div class="ulist">
+<ul>
+<li><p>
+The variable that is being in enclosed must either be:<div class="ulist">
+<ul>
+<li><code>final</code></li>
+<li><em>Effectively final</em>. No change can be made after used in a closure.</li>
+</ul>
+</div></p></li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_closure_error">
+<h2>Closure Error</h2>
+<div class="paragraph"><p>The following will not work&#8230;&#8203;</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">public static Integer foo
+        (Function&lt;Integer, Integer&gt; f) {
+    return f.apply(5);
+}
+
+public void otherMethod() {
+    Integer x = 3;
+    Function&lt;Integer, Integer&gt; add3 = z -&gt; <span class="mono-bold-red">x</span> + z;
+    <span class="mono-bold-red">x = 10;</span>
+    System.out.println(foo(add3));
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_lab_create_duplicated_code">
+<h2>Lab: Create Duplicated Code</h2>
+<div class="paragraph"><p>An application for a closure is to avoid repetition.</p></div>
+<div class="paragraph"><p><strong>Step 1:</strong> In <strong><em>LambdasTest.java</em></strong> create the following test, <code>testClosuresAvoidRepeats</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    @Test
+    public void testClosuresAvoidRepeats() {
+        MyPredicate&lt;String&gt; stringHasSizeOf4 =
+                str -&gt; str.length() == 4;
+
+        MyPredicate&lt;String&gt; stringHasSizeOf2 =
+                str -&gt; str.length() == 2;
+
+        List&lt;String&gt; names = Arrays.asList("Foo", "Ramen", "Naan", "Ravioli");
+        System.out.println(Functions.myFilter(names, stringHasSizeOf4));
+        System.out.println(Functions.myFilter(names, stringHasSizeOf2));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Notice that <code>stringHasSize4</code> and <code>stringHasSize2</code> are duplicated.</p></div>
+</section>
+<section class="slide" id="_lab_refactor_duplicated_code_with_a_closure">
+<h2>Lab: Refactor Duplicated Code with a Closure</h2>
+<div class="paragraph"><p>An application for a closure is to avoid repetition.</p></div>
+<div class="paragraph"><p><strong>Step 1:</strong> In <strong><em>LambdasTest.java</em></strong> change <code>testClosuresAvoidRepeats</code> to avoid repeats to look like the following:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
+public class LambdasTest {
+
+    ...
+
+    public MyPredicate&lt;String&gt; stringHasSizeOf(final int length) {
+        return null; //Create your closure here
+    }
+
+    @Test
+    public void testClosuresAvoidRepeats() {
+        List&lt;String&gt; names = Arrays.asList("Foo", "Ramen", "Naan", "Ravioli");
+        System.out.println(Functions.myFilter(names, <span class="mono-bold-green">stringHasSizeOf(4)</span>));
+        System.out.println(Functions.myFilter(names, <span class="mono-bold-green">stringHasSizeOf(2)</span>));
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph"><p><strong>Step 2:</strong> Inside of <code>stringHasSizeOf(final int length)</code> return a <code>MyPredicate</code> that <em>closes</em> around the length.</p></div>
+</section>
+<section class="slide" id="__code_optional_code">
+<h2><code>Optional</code></h2>
+<div class="quoteblock">
+<div class="title">Sir Richard Antony Hoare on the <code>null</code> reference</div>
+<blockquote>
+<div class="paragraph"><p>I call it my billion-dollar mistake. It was the invention of the null reference in 1965. At that time, I was designing the first comprehensive type system for references in an object oriented language (ALGOL W). My goal was to ensure that all use of references should be absolutely safe, with checking performed automatically by the compiler. But I couldn&#8217;t resist the temptation to put in a null reference, simply because it was so easy to implement. This has led to innumerable errors, vulnerabilities, and system crashes, which have probably caused a billion dollars of pain and damage in the last forty years.</p></div>
+</blockquote>
+</div>
+</section>
+<section class="slide" id="__code_optional_code_defined_in_java_8">
+<h2><code>Optional</code> Defined in Java 8</h2>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>A <strong>container object</strong> which may or may not contain a non-null value. If a value is present, <code>isPresent()</code> will return <code>true</code> and <code>get()</code> will return the value.</p></div>
+</blockquote>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+Optional is <strong>not</strong> <code>Serializable</code>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Warning</div>
+</td>
+<td class="content">
+This is a value-based class; use of identity-sensitive operations
+(including reference equality (<code>==</code>), identity hash code, or synchronization) on instances of <code>Optional</code> may have unpredictable results and should be avoided.
+</td>
+</tr>
+</table>
+</div>
+</section>
+<section class="slide" id="_streams">
+<h2>Streams</h2>
+<div class="paragraph"><p><code>Streams</code> differ from Collections in the following ways:</p></div>
+<div class="ulist">
+<ul>
+<li>No storage. A stream is not a data structure that stores elements; instead</li>
+<li>It conveys elements from a source through a pipeline of computational operations</li>
+<li><p>
+Sources can include.<div class="ulist">
+<ul>
+<li>Data structure</li>
+<li>An array</li>
+<li>Generator function</li>
+<li>I/O channel</li>
+</ul>
+</div></p></li>
+<li>Functional in nature. An operation on a stream produces a result, <strong>but does not modify its source</strong>.</li>
+<li>Intermediate operations are laziness-seeking exposing opportunities for optimization.</li>
+<li>Possibly unbounded. While collections have a finite size, streams need not.</li>
+<li>Short-circuiting operations such as <code>limit(n)</code> or <code>findFirst()</code> can allow computations on infinite streams to complete in finite time.</li>
+<li>Consumable, The elements of a stream are only visited once during the life of a stream.</li>
+<li>Like an <code>java.util.Iterator</code>, a new <code>Stream</code> must be generated to revisit the same elements of the source.</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_streams_overview">
+<h2>Streams Overview</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="FunctionalOperations" src="./images/FunctionalOperations.png">
+</div>
+</div>
+</section>
+<section class="slide" id="_streams_overview_with_code">
+<h2>Streams Overview With Code</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="FunctionalOperationsWithCode" src="./images/FunctionalOperationsWithCode.png">
+</div>
+</div>
+</section>
+<section class="slide" id="_lab_create_a_basic_stream">
+<h2>Lab: Create a Basic Stream</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> Create a class called StreamsTest in the <code>com.xyzcorp</code> package with the following test:</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run the test</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamsTest {
+
+    @Test
+    public void testBasicStream() {
+        List&lt;Integer&gt; strings = Arrays.asList(1, 4, 5, 10, 11, 12, 40, 50);
+        strings.stream().map(x -&gt; x + 1).collect(Collectors.toList());
+    }
+}</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>The <code>stream()</code> call converts the string <code>List</code> into a stream</li>
+<li>The stream becomes a pipeline that functional operations can be completed.</li>
+<li><code>map</code> is an intermediate operation</li>
+<li><code>collect</code> is an terminal operation</li>
+<li>The terminal operation will convert the <code>stream</code> into a list`</li>
+<li><code>Collectors</code> offers a wide range of different terminal operations</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_doing_your_own_collecting">
+<h2>Doing your own collecting</h2>
+<div class="ulist">
+<ul>
+<li>When calling <code>collect</code>, you can specify your own functions</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java API for the <code>Stream</code> method <code>collect</code>:</div>
+<div class="content">
+<pre class="highlight"><code class="java language-java">&lt;R&gt; R collect(Supplier&lt;R&gt; supplier,
+              BiConsumer&lt;R, ? super T&gt; accumulator,
+              BiConsumer&lt;R, R&gt; combiner);</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_the_code_supplier_code_in_code_collect_code">
+<h2>The <code>Supplier</code> in <code>collect</code></h2>
+<div class="ulist">
+<ul>
+<li><code>Function</code> that creates a new result container.</li>
+<li><p>
+In a parallel execution:<div class="ulist">
+<ul>
+<li>May be called multiple times</li>
+<li>Must return a fresh value each time.</li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java API for the <code>Stream</code> method <code>collect</code>:</div>
+<div class="content">
+<pre class="highlight"><code class="java language-java">&lt;R&gt; R collect(<span class="mono-bold-green">Supplier&lt;R&gt; supplier</span>,
+              BiConsumer&lt;R, ? super T&gt; accumulator,
+              BiConsumer&lt;R, R&gt; combiner);</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_the_code_accumulator_code_in_code_collect_code">
+<h2>The <code>Accumulator</code> in <code>collect</code></h2>
+<div class="ulist">
+<ul>
+<li><code>Function</code> for incorporating an additional element into a result</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java API for the <code>Stream</code> method <code>collect</code>:</div>
+<div class="content">
+<pre class="highlight"><code class="java language-java">&lt;R&gt; R collect(Supplier&lt;R&gt; supplier,
+              <span class="mono-bold-green">BiConsumer&lt;R, ? super T&gt; accumulator</span>,
+              BiConsumer&lt;R, R&gt; combiner);</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_the_code_combiner_code_in_code_collect_code">
+<h2>The <code>Combiner</code> in <code>collect</code></h2>
+<div class="ulist">
+<ul>
+<li><code>Function</code> for combining two values</li>
+<li>Must be compatible with the <code>accumulator</code> function</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Java API for the <code>Stream</code> method <code>collect</code>:</div>
+<div class="content">
+<pre class="highlight"><code class="java language-java">&lt;R&gt; R collect(Supplier&lt;R&gt; supplier,
+              BiConsumer&lt;R, ? super T&gt; accumulator,
+              <span class="mono-bold-green">BiConsumer&lt;R, R&gt; combiner</span>);</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_lab_create_your_own_code_collect_code">
+<h2>Lab: Create your own <code>collect</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>StreamsTest</code> in create the following test (Yes, it&#8217;s a bit long)</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run the test</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Discuss what we are looking at.</p></div>
+<div class="paragraph"><p><strong>Step 4:</strong> Using your IDEs convert these functions to lambdas or method references.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public class StreamsTest {
+
+   ...
+
+   @Test
+   public void testCompleteCollector() {
+      List&lt;Integer&gt; numbers = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+      List&lt;Integer&gt; result = numbers.stream().map(x -&gt; x + 1).collect(new Supplier&lt;List&lt;Integer&gt;&gt;() {
+          @Override
+          public List&lt;Integer&gt; get() {
+              return new ArrayList&lt;Integer&gt;();
+          }
+      }, new BiConsumer&lt;List&lt;Integer&gt;, Integer&gt;() {
+          @Override
+          public void accept(List&lt;Integer&gt; integers, Integer integer) {
+              System.out.println("adding integer: " + integer);
+              integers.add(integer);
+          }
+      }, new BiConsumer&lt;List&lt;Integer&gt;, List&lt;Integer&gt;&gt;() {
+          @Override
+          public void accept(List&lt;Integer&gt; left, List&lt;Integer&gt; right) {
+              synchronized (numbers) {
+                  System.out.println("left = " + left);
+                  System.out.println("right = " + right);
+                  left.addAll(right);
+                  System.out.println("combined = " + left);
+              }
+          }
+      });
+      System.out.println("Ending with the result = " + result);
+   }
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_parallelizing_streams">
+<h2>Parallelizing Streams</h2>
+<div class="ulist">
+<ul>
+<li>We can call <code>parallel()</code> anywhere in our pipeline when needed.</li>
+<li>This is will cause the rest of that pipeline to be executed on a different thread.</li>
+<li>Aggregate operations and parallel streams enable you to implement parallelism with non-thread-safe collections, provided that you <strong><em>do not modify the collection</em></strong> while you are operating on it.</li>
+<li>Parallelism is not automatically faster than performing operations serially, although it can be if you have enough data and processor cores</li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_lab_parallelizing_code_collect_code">
+<h2>Lab: Parallelizing <code>collect</code></h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>StreamsTest</code>, and in the <code>testCompleteCollector</code> add a <code>parallel</code> to the stream pipeline.</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run the test</p></div>
+<div class="paragraph"><p><strong>Step 3:</strong> Discuss what we are looking at and how it is different without <code>parallel</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public class StreamsTest {
+
+  ...
+
+  @Test
+  public void testCompleteCollector() {
+      List&lt;Integer&gt; numbers = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+      List&lt;Integer&gt; result = numbers.stream().map(x -&gt; x + 1).parallel().collect(
+              ArrayList::new,
+              (integers, integer) -&gt; {
+                  System.out.println("adding integer: " + integer);
+                  integers.add(integer);
+              }, (left, right) -&gt; {
+                  synchronized (numbers) {
+                      System.out.println("left = " + left);
+                      System.out.println("right = " + right);
+                      left.addAll(right);
+                      System.out.println("combined = " + left);
+                  }
+              });
+      System.out.println("Ending with the result = " + result);
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_lab_testing_a_summation_terminal_operation">
+<h2>Lab: Testing a Summation Terminal Operation</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>StreamsTest</code>, create a <code>testSum</code> test with the following content{</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run the test</p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">package com.xyzcorp;
+
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+public class StreamsTest {
+
+  ...
+  @Test
+  public void testSum() {
+      List&lt;Integer&gt; numbers = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
+      Integer result = numbers.stream().map(x -&gt; x + 1)
+                       .collect(Collectors.summingInt(x -&gt; x));
+      System.out.println(result);
+  }
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_specialized_streams">
+<h2>Specialized Streams</h2>
+<div class="ulist">
+<ul>
+<li>There are a collection of primitive based <code>Stream</code> that support sequential and parralel aggregate operations.</li>
+<li><p>
+These operations are specialized for those primitives and they include<div class="ulist">
+<ul>
+<li><p>
+<code>IntStream</code><div class="ulist">
+<ul>
+<li>To convert from a <code>Stream&lt;Integer&gt;</code> to a <code>IntStream</code> used <code>mapToInt</code></li>
+<li>To convert from a <code>IntStream</code> to a <code>Stream&lt;Integer&gt;</code> use <code>boxed()</code></li>
+</ul>
+</div></p></li>
+<li><p>
+<code>DoubleStream</code><div class="ulist">
+<ul>
+<li>To convert from a <code>Stream&lt;Double&gt;</code> to a <code>DoubleStream</code> used <code>mapToDouble</code></li>
+<li>To convert from a <code>DoubleStream</code> to a <code>Stream&lt;Double&gt;</code> use <code>boxed()</code></li>
+</ul>
+</div></p></li>
+<li><p>
+<code>LongStream</code><div class="ulist">
+<ul>
+<li>To convert from a <code>Stream&lt;Long&gt;</code> to a <code>LongStream</code> used <code>mapToLong</code></li>
+<li>To convert from a <code>LongStream</code> to a <code>Stream&lt;Double&gt;</code> use <code>boxed()</code></li>
+</ul>
+</div></p></li>
+</ul>
+</div></p></li>
+</ul>
+</div>
+</section>
+<section class="slide" id="_default_methods">
+<h2>Default Methods</h2>
+<div class="ulist">
+<ul>
+<li>Enable you to add new functionality to the <code>interface</code> of your libraries</li>
+<li>Ensure binary compatibility with code written for older versions of those <code>interface</code>.</li>
+<li>Comes closer to have "concrete" method in an "interface" by composing other <code>abstract</code> methods.</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Default Method Arbitrary Example</div>
+<div class="content">
+<pre class="highlight"><code class="java language-java">public interface Human {
+   public String getFirstName();
+   public String getLastName();
+   <span class="mono-bold-green">default public String getFullName() {
+     return String.format("%s %s",
+        getFirstName(), getLastName());
+   }</span>
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_identity_function_defined">
+<h2>Identity Function Defined</h2>
+<div class="imageblock">
+<div class="content">
+<img alt="identity" src="./images/identity.png">
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+Identity Function Definition
+</li>
+</ol>
+</div>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph"><p>In mathematics, an identity function, also called an identity relation or identity map or identity transformation, is a function that always returns the same value that was used as its argument.</p></div>
+</blockquote>
+</div>
+<div class="paragraph"><p>Source: <a href="https://en.wikipedia.org/wiki/Identity_function">Wikipedia</a></p></div>
+<div class="paragraph"><p>Inside of <code>java.util.Function</code></p></div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="java language-java">static &lt;T&gt; Function&lt;T, T&gt; identity() {
+        return t -&gt; t;
+}</code></pre>
+</div>
+</div>
+</section>
+<section class="slide" id="_identity_function_replacement">
+<h2>Identity Function Replacement</h2>
+<div class="paragraph"><p><strong>Step 1:</strong> In <code>StreamsTest</code>, refactor <code>testSum</code> to use the Identity Function{</p></div>
+<div class="paragraph"><p><strong>Step 2:</strong> Run the test</p></div>
+</section>
+<section class="slide" id="_thank_you">
+<h2>Thank You</h2>
+<div class="ulist">
+<ul>
+<li>Email: <a href="mailto:dhinojosa@evolutionnext.com">dhinojosa@evolutionnext.com</a></li>
+<li>Github: <a class="bare" href="https://www.github.com/dhinojosa">https://www.github.com/dhinojosa</a></li>
+<li>Twitter: <a class="bare" href="http://twitter.com/dhinojosa">http://twitter.com/dhinojosa</a></li>
+<li>Linked In: <a class="bare" href="http://www.linkedin.com/in/dhevolutionnext">http://www.linkedin.com/in/dhevolutionnext</a></li>
+</ul>
+</div>
+</section>
+<div aria-role="navigation">
+<a class="deck-prev-link" href="#" title="Previous">&#8592;</a>
+<a class="deck-next-link" href="#" title="Next">&#8594;</a>
+</div>
+</div>
+<script src="../deck.js/jquery.min.js"></script>
+<script src="../deck.js/core/deck.core.js"></script>
+<script src="../deck.js/extensions/scale/deck.scale.js"></script>
+<script src="../deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="../deck.js/extensions/split/deck.split.js"></script>
+<script>
+  (function($, deck, undefined) {
+    $.deck.defaults.keys['previous'] = [8, 33, 37, 39];
+    $.deck.defaults.keys['next'] = [13, 32, 34, 39];
+  
+    $.extend(true, $[deck].defaults, {
+        countNested: false
+    });
+  
+    $.deck('.slide');
+  })(jQuery, 'deck');
+</script>
+<style>
+  .slide.canvas-image {
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: -moz-box;
+  display: -webkit-box;
+  display: -ms-box;
+  display: box;
+  -moz-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  -ms-box-orient: vertical;
+  box-orient: vertical;
+  -moz-box-align: start;
+  -webkit-box-align: start;
+  -ms-box-align: start;
+  box-align: start;
+  -moz-box-pack: start;
+  -webkit-box-pack: start;
+  -ms-box-pack: start;
+  box-pack: start;}
+  
+  .bottom-left {
+    left: 1%;
+    bottom: 20%; }
+  
+  .top-left {
+    left: 1%;
+    top: 20%; }
+  
+  .bottom-right {
+    right: 1%;
+    bottom: 20%; }
+  
+  .top-right {
+    right: 1%;
+    top: 20%; }
+  
+  .center-up {
+    right: 50%;
+    top: 1%;
+  }
+  
+  .center-down {
+    right: 50%;
+    bottom: 1%;
+  }
+  .canvas-image .canvas-caption p {
+    text-align: center;
+    padding-top: 0;
+    padding: 0;
+    -moz-transform: none;
+    -webkit-transform: none;
+    -o-transform: none;
+    -ms-transform: none;
+    transform: none;
+    display: inline;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    font-weight: bold;
+    font-size: 58px;
+    -webkit-box-shadow: 2px 2px 2px #000;
+    -moz-box-shadow: 2px 2px 2px #000;
+    box-shadow: 2px 2px 2px #000;
+    padding: 1rem;
+    color: white; }
+  kbd.keyseq { color: #555555; }
+  kbd:not(.keyseq) {
+    display: inline-block;
+    color: #222222;
+    font-size: 0.7em;
+    line-height: 1.4;
+    background-color: #F7F7F7;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px white inset;
+    margin: -0.15em 0.15em 0 0.15em;
+    padding: 0.2em 0.6em;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  kbd kbd:first-child { margin-left: 0; }
+  kbd kbd:last-child { margin-right: 0; }
+</style>
+</body>
+</html>
